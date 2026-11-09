@@ -26,7 +26,7 @@ test('fluxo completo: erro, retomada, conclusão, mapa e revisão sem XP duplica
   await expect(dialog.getByRole('heading', { name: 'Qual declaração permite reatribuir o valor de uma variável?' })).toBeVisible();
   await page.goForward();
   await expect(page.getByRole('heading', { name: /Bom te ver/ })).toBeVisible();
-  await page.getByRole('button', { name: 'Continuar aprendendo' }).click();
+  await page.getByRole('button', { name: 'Continuar de onde parei' }).click();
   await expect(wrong).toBeChecked();
   await dialog.getByRole('button', { name: 'Tentar novamente', exact: true }).click();
   await finishQuestions(page);
@@ -39,7 +39,8 @@ test('fluxo completo: erro, retomada, conclusão, mapa e revisão sem XP duplica
   await expect(page.locator('.stats-grid')).toContainText('14');
   await expect(page.locator('.hero-footer')).toContainText('50%');
   await expect(page.locator('.course-card').filter({ hasText: 'Fundamentos de JavaScript' })).toContainText('6 de 12');
-  await expect(page.locator('.achievement').filter({ hasText: 'Mais um passo' })).not.toHaveClass(/locked/);
+  await page.getByRole('button', { name: 'Ver conquistas' }).click();
+  await expect(page.locator('.achievement').filter({ hasText: 'Mais um passo' })).toContainText('Desbloqueada');
   await navigate(page, 'Minhas trilhas');
   await expect(page.locator('.map-progress')).toContainText('6 de 12');
   await expect(page.getByRole('button', { name: /Etapa 7: Operadores. Em andamento/ })).toBeVisible();
@@ -51,9 +52,6 @@ test('fluxo completo: erro, retomada, conclusão, mapa e revisão sem XP duplica
   await dialog.getByRole('button', { name: 'Voltar ao meu aprendizado' }).click();
   await navigate(page, 'Visão geral');
   await expect(page.locator('.stats-grid')).toContainText('1.340');
-  await page.getByRole('button', { name: 'Kodeo, início' }).isVisible().then(async visible => {
-    if (visible) await page.getByRole('button', { name: 'Kodeo, início' }).click();
-  });
   await expect(page.locator('.stats-grid')).toContainText('1.340');
   await page.reload();
   await expect(page.locator('.stats-grid')).toContainText('1.340');
