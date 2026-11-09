@@ -223,3 +223,75 @@
   .lesson-intro { gap: 38px; }
   .practice-grid { grid-template-columns: minmax(0, 1fr) 258px; gap: 24px; }
 }
+
+
+/* Revisão de usabilidade: visibilidade de progresso sem 20 marcadores sobrepostos. */
+.lesson-progress-condensed {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  padding: 12px 14px;
+  margin: 13px 0 22px;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  background: var(--surface);
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.5;
+}
+.lesson-progress-condensed span:first-child { font-weight: 650; color: var(--text); }
+
+/* Leitura de questões longas (inclusive consultas KQL) sem rolagem lateral da página. */
+.lesson-workspace, .lesson-body, .practice-grid, .exercise-form,
+.question-panel, .response-panel, .lesson-option, .option-label {
+  min-width: 0;
+}
+.lesson-option { overflow-wrap: anywhere; }
+.lesson-option .MuiRadio-root { flex-shrink: 0; }
+.lesson-option .option-letter { flex-shrink: 0; }
+.lesson-option .option-label { flex: 1; min-width: 0; }
+.lesson-option:focus-within { outline: 2px solid var(--blue); outline-offset: 2px; }
+.lesson-feedback p, .question-panel p, .question-panel h2 { overflow-wrap: anywhere; }
+.question-snippet { max-width: 100%; }
+.question-snippet pre { white-space: pre; max-width: 100%; overscroll-behavior-x: contain; }
+.lesson-topbar .MuiButtonBase-root, .answer-actions .MuiButton-root,
+.summary-actions .MuiButton-root, .practice-footer button {
+  min-height: 44px;
+}
+.lesson-dialog .MuiDialog-paper { overflow-x: hidden; }
+
+@media (min-width: 601px) and (max-width: 1024px) {
+  .lesson-body { padding: 24px 22px 34px; }
+  .question-panel, .response-panel { padding: 23px; }
+  .lesson-option { padding: 14px 16px; min-height: 60px; }
+  .lesson-companion { position: static; }
+}
+
+@media (max-width: 600px) {
+  .lesson-body { padding-inline: clamp(12px, 4vw, 18px); }
+  .lesson-progress-condensed { flex-direction: column; gap: 3px; }
+  .lesson-breadcrumb { line-height: 1.5; overflow-wrap: anywhere; }
+  .question-panel h2 { font-size: clamp(19px, 5.4vw, 24px); line-height: 1.35; }
+  .question-panel-kicker { flex-wrap: wrap; line-height: 1.5; }
+  .lesson-option { min-height: 60px; padding: 11px 9px; gap: 8px; }
+  .option-label { font-size: 15px; line-height: 1.55; }
+  .answer-actions > .MuiButton-root { min-height: 44px; }
+  .answer-actions > div { display: flex; width: 100%; }
+  .answer-actions > div .MuiButton-root { flex: 1 1 auto; white-space: normal; }
+  .summary-actions { align-items: stretch; }
+  .summary-actions .MuiButton-root { width: 100%; }
+  .lesson-summary-stats { grid-template-columns: 1fr; }
+  .lesson-summary-stats > div { padding: 16px; }
+  .practice-footer { align-items: stretch; }
+  .practice-footer button { padding: 10px 4px; }
+  .lesson-topbar { min-width: 0; }
+  .lesson-exit.MuiButton-root { min-width: 0; white-space: normal; text-align: left; }
+}
+@media (max-width: 360px) {
+  .lesson-topbar { padding-inline: 10px; }
+  .lesson-topbar .MuiIconButton-root { min-width: 44px; }
+  .question-panel, .response-panel { padding: 17px 12px; }
+  .lesson-feedback { padding: 13px 10px; }
+  .lesson-progress-condensed { font-size: 12px; }
+}
