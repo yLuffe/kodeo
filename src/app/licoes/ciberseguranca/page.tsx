@@ -7,5 +7,5 @@ export const metadata: Metadata = {
 };
 
 export default function CybersecurityLessonPage() {
-  return <KodeoApp initialSection="courses" initialSecurityQuizOpen/>;
+  return <KodeoApp initialSection="courses" initialLessonOpen initialLessonId="sec-quiz"/>;
 }

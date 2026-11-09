@@ -1,6 +1,6 @@
 import { gamification } from './learning';
 
-interface QuestionBase { id: string; title: string; context: string; explanation: string; hint: string; xp: number; }
+interface QuestionBase { topic?: string; difficulty?: string; id: string; title: string; context: string; explanation: string; hint: string; xp: number; }
 export interface ChoiceQuestion extends QuestionBase { type: 'choice'; options: string[]; correct: number; code?: string; incorrectFeedback?: string[]; }
 export interface TextQuestion extends QuestionBase { type: 'text'; accepted: string[]; placeholder: string; }
 export interface CodeQuestion extends QuestionBase { type: 'code'; challenge: 'points' | 'profile'; expectedName?: string; starter: string; criteria: string[]; solution: string; }

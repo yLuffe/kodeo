@@ -47,3 +47,24 @@ test('questões não apresentam rótulos de certificação', () => {
     assert.equal(forbidden.test([question.title, question.context, question.explanation, ...question.options].join(' ')), false, question.id);
   }
 });
+
+import { courseLesson } from '../src/lib/course-lessons';
+import { achievementProgress } from '../src/lib/achievements';
+import { initialLessonState, lessonReducer } from '../src/lib/lesson-session';
+import { readProfile } from '../src/lib/local-profile';
+import { learnerProgress } from '../src/lib/progress';
+
+test('concluir Cyber salva o perfil e soma XP sem avançar a trilha de JavaScript', () => {
+  const lesson = courseLesson('sec-quiz');
+  let session = lessonReducer(initialLessonState(), { type: 'start' }, lesson);
+  for (const question of securityQuestions) {
+    session = lessonReducer(session, { type: 'draft', questionId: question.id, answer: String(question.correct) }, lesson);
+    session = lessonReducer(session, { type: 'submit', questionId: question.id, submittedAt: '2026-11-09' }, lesson);
+    session = lessonReducer(session, { type: 'next', at: '2026-11-09' }, lesson);
+  }
+  const profile = readProfile(JSON.stringify({ firstName: 'Ana', lessons: { 'sec-quiz': session }, securityExplored: true }))!;
+  const progress = learnerProgress(initialLessonState(), [], profile.lessons['sec-quiz']);
+  assert.deepEqual(progress.completed, { javascript: 5, security: 1 });
+  assert.equal(progress.xp, 1490);
+  assert.equal(achievementProgress(profile.lessons).find(badge => badge.id === 'cyber')?.current, 1);
+});
