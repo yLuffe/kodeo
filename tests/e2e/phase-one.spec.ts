@@ -52,9 +52,6 @@ test('fluxo completo: erro, retomada, conclusão, mapa e revisão sem XP duplica
   await dialog.getByRole('button', { name: 'Voltar ao meu aprendizado' }).click();
   await navigate(page, 'Visão geral');
   await expect(page.locator('.stats-grid')).toContainText('1.340');
-  await page.getByRole('button', { name: 'Kodeo, início' }).isVisible().then(async visible => {
-    if (visible) await page.getByRole('button', { name: 'Kodeo, início' }).click();
-  });
   await expect(page.locator('.stats-grid')).toContainText('1.340');
   await page.reload();
   await expect(page.locator('.stats-grid')).toContainText('1.340');
