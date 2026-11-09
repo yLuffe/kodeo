@@ -4,10 +4,9 @@ test.use({ storageState: { cookies: [], origins: [] } });
 
 async function createDemoProfile(page: Page) {
   const dialog = page.getByRole('dialog', { name: 'Como podemos chamar você?' });
-  if (await dialog.isVisible()) {
-    await dialog.getByRole('textbox', { name: 'Primeiro nome' }).fill('Aluno');
-    await dialog.getByRole('button', { name: 'Começar', exact: true }).click();
-  }
+  await expect(dialog).toBeVisible();
+  await dialog.getByRole('textbox', { name: 'Primeiro nome' }).fill('Aluno');
+  await dialog.getByRole('button', { name: 'Começar', exact: true }).click();
 }
 
 test('questionário de cibersegurança apresenta correção e permite voltar à trilha', async ({ page }) => {
