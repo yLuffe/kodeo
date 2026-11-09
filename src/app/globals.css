@@ -183,3 +183,30 @@ button.brand { border: 0; background: transparent; padding: 0; text-align: left;
 .mobile-drawer .sidebar { position: static; width: 240px; height: 100%; transform: none; visibility: visible; }
 .mobile-drawer .brand { flex-shrink: 0; }
 #main-content:focus, .page-heading h1:focus { outline: none; }
+
+/* Keep focus visible in both themes and in MUI controls. */
+.app :is(button, a, summary, [tabindex="0"]):focus-visible,
+.app .MuiButtonBase-root.Mui-focusVisible {
+  outline: 2px solid var(--blue);
+  outline-offset: 2px;
+}
+.sidebar { overflow-y: auto; }
+.sidebar > * { flex-shrink: 0; }
+.stats-grid, .dashboard-grid, .courses-grid { min-width: 0; }
+.stats-grid > *, .dashboard-grid > *, .courses-grid > * { min-width: 0; }
+
+@media (max-width: 760px) {
+  .topbar { min-height: 62px; height: auto; gap: 8px; }
+  .breadcrumb > span, .breadcrumb > svg { display: none; }
+  .breadcrumb strong { overflow-wrap: anywhere; }
+  .topbar .MuiIconButton-root, .mobile-drawer .nav-item { min-height: 44px; }
+  .topbar .MuiIconButton-root { min-width: 44px; }
+}
+
+@media (max-width: 480px) {
+  .stats-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .stat-card strong span { display: block; margin: 3px 0 0; }
+  .page-heading, .section-title, .task-row { flex-wrap: wrap; }
+  .page-heading .streak-tag { margin-top: 0; }
+  .text-action, .task-action, .course-link { min-height: 44px; white-space: normal; }
+}

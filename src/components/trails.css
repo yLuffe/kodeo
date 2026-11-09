@@ -115,3 +115,11 @@
 @media(max-width: 650px) { .library-cards { grid-template-columns: repeat(2, 1fr); } .library-card { padding: 12px 10px; gap: 8px; } .library-icon { width: 26px; height: 26px; } .library-icon svg { width: 16px; } .library-card strong { font-size: 11px; } .trail-filter { gap: 5px; } .trail-filter button { padding: 7px 9px; font-size: 11px; gap: 5px; } .trail-map-heading h2 { font-size: 19px; } .map-course-icon { width: 39px; height: 39px; } .map-course-icon svg { width: 22px; } .map-next-banner { flex-wrap: wrap; } .map-next-banner > div { flex: 1; min-width: 170px; } .map-next-banner .MuiButton-root { margin-left: 47px; } .map-toolbar { gap: 15px; } .map-module-guide { padding-inline: 20px; font-size: 10px; } .map .path-step { left: var(--mobile-left); top: var(--mobile-top); width: 56%; transform: translate(-50%, -27px); } .learning-board.map { height: var(--mobile-board-height); } .desktop-line { display: none; } .mobile-line { display: block; } .step-button { width: 54px; height: 54px; border-radius: 18px; } .step-caption { margin-top: 12px; } .step-caption h3 { max-width: 160px; font-size: 12px; } .step-caption small { font-size: 9px; } .step-number { font-size: 8px; } .map-finish > span:last-child { margin-left: 29px; } .map-finish { gap: 6px; } .list .path-step { padding: 17px 15px; gap: 11px; flex-wrap: wrap; } .list .you-are-here { display: none; } .list .text-action { font-size: 11px; } .step-detail-meta { font-size: 11px; } }
 @media(prefers-reduced-motion: reduce) { .library-card, .step-button { transition: none; } }
 .map .step-caption { position: relative; width: fit-content; max-width: 100%; margin: 10px auto 0; padding: 4px 8px; background: var(--surface); border-radius: 7px; }
+
+@media (max-width: 650px) {
+  .library-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .library-card > div { min-width: 0; overflow-wrap: anywhere; }
+  .trail-filter button, .map-toolbar .MuiToggleButton-root { min-height: 44px; }
+  .map-next-banner > div { min-width: 0; }
+  .map-next-banner .MuiButton-root { margin-left: 0; min-height: 44px; }
+}
