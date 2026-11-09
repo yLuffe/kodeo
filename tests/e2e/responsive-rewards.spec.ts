@@ -12,8 +12,9 @@ test('painel, trilha e exercício se ajustam ao tamanho da tela', async ({ page 
     await expect(page.locator('.learning-board')).toBeVisible();
     if (width <= 650) await expect(page.getByRole('button', { name: 'Ver como lista' })).toHaveAttribute('aria-pressed', 'true');
     await noOverflow(page);
-    await page.goto('/');
-    await begin(page);
+    await page.goto('/licoes/variaveis');
+    if (width === widths[0]) await page.getByRole('button', { name: 'Vamos praticar' }).click();
+    await expect(page.getByRole('heading', { name: /Qual declaração permite/ })).toBeVisible();
     await noOverflow(page);
   }
 });

@@ -39,7 +39,8 @@ test('fluxo completo: erro, retomada, conclusão, mapa e revisão sem XP duplica
   await expect(page.locator('.stats-grid')).toContainText('14');
   await expect(page.locator('.hero-footer')).toContainText('50%');
   await expect(page.locator('.course-card').filter({ hasText: 'Fundamentos de JavaScript' })).toContainText('6 de 12');
-  await expect(page.locator('.achievement').filter({ hasText: 'Mais um passo' })).not.toHaveClass(/locked/);
+  await page.getByRole('button', { name: 'Ver conquistas' }).click();
+  await expect(page.locator('.achievement').filter({ hasText: 'Mais um passo' })).toContainText('Desbloqueada');
   await navigate(page, 'Minhas trilhas');
   await expect(page.locator('.map-progress')).toContainText('6 de 12');
   await expect(page.getByRole('button', { name: /Etapa 7: Operadores. Em andamento/ })).toBeVisible();
