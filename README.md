@@ -34,12 +34,16 @@ A proposta é simples: **a gamificação apoia o aprendizado, e o conteúdo cont
 | **Biblioteca de trilhas** | Blocos compactos, filtros por status e visualização alternativa em lista. |
 | **Desbloqueios** | Requisitos explícitos de nível, XP, etapa anterior e conclusão de outras trilhas. |
 | **Prática** | Lição de JavaScript com alternativas, resposta escrita, editor de código e feedback por critério. |
+| **Introdução à cibersegurança** | Questionário com 20 questões originais em português, correção imediata, dicas, explicações e revisão. |
 | **Aparência** | Temas claro e escuro, azul sóbrio e layout responsivo. |
 | **Acessibilidade** | Estados com texto e ícones, foco visível e respeito à redução de movimento. |
 
 > **Estágio atual:** protótipo com perfil local e dados simulados. Na primeira visita, informe o primeiro nome. O navegador salva rascunhos, tentativas, XP e conclusões. Veja o [guia de JavaScript](docs/JAVASCRIPT.md).
 
 ### Ambiente de lições
+
+A trilha **Introdução à cibersegurança** começa com o questionário **Desafios de cibersegurança**: 20 questões fictícias de múltipla escolha com dificuldade variada. A rota é `/licoes/ciberseguranca`. O aluno recebe correção imediata, explicação, resultado e revisão sem XP duplicado. As questões foram criadas para este projeto e não reproduzem bancos de exames; estão em `src/lib/security-questions.ts`.
+
 
 As etapas 1 a 5 têm leitura rápida e uma pergunta de revisão no mapa. As etapas 6 a 11 têm exercícios interativos com dicas e feedback. A etapa 6 também inclui resposta escrita e editor de código. O código submetido é analisado por critérios com Acorn, sem ser executado.
 
@@ -126,6 +130,7 @@ As regras de nível, requisitos e acesso às etapas ficam em `src/lib/trails.ts`
 - [x] Progresso compartilhado entre dashboard e mapa, níveis dinâmicos e navegação sem reiniciar a sessão.
 - [x] Menu mobile com controle de foco e Escape; aviso explícito dos dados simulados.
 - [x] Testes do fluxo da Fase 1 em desktop e mobile.
+- [x] Adicionar 20 questões originais interativas em português à trilha de cibersegurança.
 - [ ] Expandir os conteúdos e as atividades das lições.
 - [ ] Integrar Supabase Auth, PostgreSQL e Row Level Security.
 - [ ] Persistir tentativas, progresso, conquistas e histórico de XP.

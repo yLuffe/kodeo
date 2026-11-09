@@ -31,8 +31,8 @@ test('todos os requisitos de uma trilha devem ser atendidos', () => {
   const requirements = find('pentest').requirements;
   assert.equal(accessReasons(requirements, learner()).length, 3);
   assert.equal(accessReasons(requirements, learner(2300)).length, 1);
-  assert.equal(trailStatus(find('pentest'), learner(2300, { security: 10 })), 'available');
-  assert.equal(trailStatus(find('pentest'), learner(2299, { security: 10 })), 'locked');
+  assert.equal(trailStatus(find('pentest'), learner(2300, { security: find('security').steps.length })), 'available');
+  assert.equal(trailStatus(find('pentest'), learner(2299, { security: find('security').steps.length })), 'locked');
 });
 test('XP suficiente não permite pular etapas anteriores', () => {
   assert.equal(stepStatus(find('javascript'), 5, learner(3000)), 'current');
@@ -54,4 +54,15 @@ test('as lições de uma trilha bloqueada mostram o requisito da própria trilha
   assert.equal(stepStatus(find('web'), 0, learner()), 'locked');
   assert.match(stepReasons(find('web'), 0, learner())[0], /nível 6/);
   assert.equal(stepStatus(find('logic'), 7, learner()), 'completed');
+});
+
+
+test('questionário de cibersegurança é a primeira atividade jogável da trilha', () => {
+  const security = find('security');
+  assert.equal(security.steps[0].id, 'sec-quiz');
+  assert.equal(security.steps[0].playable, true);
+  assert.equal(stepStatus(security, 0, learner()), 'available');
+  assert.equal(stepStatus(security, 1, learner()), 'locked');
+  assert.equal(stepStatus(security, 0, learner(1490, { security: 1 })), 'completed');
+  assert.equal(stepStatus(security, 1, learner(1490, { security: 1 })), 'current');
 });

@@ -25,6 +25,7 @@ export const trails: Trail[] = [
     step('js-12', 'Desafio da trilha', 'Reúna seus conhecimentos em um pequeno desafio.', 'Construindo soluções', { minLevel: 6, minXP: 1800, minutes: 10, xp: 100 }),
   ] },
   { id: 'security', title: 'Introdução à cibersegurança', category: 'Cibersegurança', description: 'Reconheça riscos e aprenda os fundamentos para proteger pessoas, sistemas e informações.', icon: 'shield', color: 'purple', initialCompleted: 0, steps: [
+    step('sec-quiz', 'Desafios de cibersegurança', 'Pratique com 20 questões inéditas, explicações e correção imediata.', 'Prática guiada', { playable: true, minutes: 25 }),
     step('sec-1', 'O que estamos protegendo?', 'Conheça confidencialidade, integridade e disponibilidade.', 'Fundamentos'),
     step('sec-2', 'Ameaças e riscos', 'Entenda a diferença entre ameaça, vulnerabilidade e risco.', 'Fundamentos'),
     step('sec-3', 'Engenharia social', 'Identifique manipulações e sinais de phishing.', 'Fundamentos'),

@@ -6,6 +6,7 @@ import { ArrowRight, ArrowUpRight, BookOpen, Check, ChevronRight, Code2, Compass
 import { makeTheme } from '@/components/theme';
 import { courses, gamification } from '@/lib/learning';
 import { LessonWorkspace } from '@/components/LessonWorkspace';
+import { SecurityQuiz } from '@/components/SecurityQuiz';
 import { initialLessonState, lessonReducer, type LessonAction, type LessonState } from '@/lib/lesson-session';
 import { TrailExplorer } from '@/components/TrailExplorer';
 import { trails, stepStatus } from '@/lib/trails';
@@ -26,7 +27,7 @@ function appUrl(path: string, query = '') {
   return basePath + path + suffix + query;
 }
 
-export default function KodeoApp({ initialSection = 'overview', initialLessonOpen = false }: { initialSection?: Section; initialLessonOpen?: boolean }) {
+export default function KodeoApp({ initialSection = 'overview', initialLessonOpen = false, initialSecurityQuizOpen = false }: { initialSection?: Section; initialLessonOpen?: boolean; initialSecurityQuizOpen?: boolean }) {
   const [mode, setMode] = useState<'light' | 'dark'>('light');
   const [section, setSection] = useState<Section>(initialSection);
   const [selectedTrail, setSelectedTrail] = useState<TrailId>('javascript');
@@ -36,6 +37,10 @@ export default function KodeoApp({ initialSection = 'overview', initialLessonOpe
   const headingRef = useRef<HTMLHeadingElement>(null);
   const focusHeading = useRef(false);
   const [lessonOpen, setLessonOpen] = useState(initialLessonOpen);
+  const [securityQuizOpen, setSecurityQuizOpen] = useState(initialSecurityQuizOpen);
+  const [securityReturnUrl, setSecurityReturnUrl] = useState(appUrl('/trilhas', '?trilha=security'));
+  const [securityAwardedIds, setSecurityAwardedIds] = useState<string[]>([]);
+  const [securityCompleted, setSecurityCompleted] = useState(false);
   const [lessonReturnUrl, setLessonReturnUrl] = useState(appUrl('/trilhas', '?trilha=javascript'));
   const [info, setInfo] = useState<string | null>(null);
   const [profileReady, setProfileReady] = useState(false);
@@ -48,7 +53,7 @@ export default function KodeoApp({ initialSection = 'overview', initialLessonOpe
   const lessonState = sessions[lessonId] ?? emptyLesson;
   const firstLesson = sessions['js-6'] ?? emptyLesson;
   const lessonDone = firstLesson.completed;
-  const progress = learnerProgress(firstLesson, Object.entries(sessions).filter(([id]) => id !== 'js-6').map(([, state]) => state));
+  const progress = learnerProgress(firstLesson, Object.entries(sessions).filter(([id]) => id !== 'js-6').map(([, state]) => state), { awardedQuestionIds: securityAwardedIds, completed: securityCompleted });
   const activeLessonIndex = javascript.steps.findIndex(step => step.id === lessonId);
   const canOpenLesson = stepStatus(javascript, activeLessonIndex, progress) !== 'locked';
   const nextLesson = javascript.steps.find((step, index) => step.playable && !sessions[step.id]?.completed && stepStatus(javascript, index, progress) !== 'locked');
@@ -60,6 +65,8 @@ export default function KodeoApp({ initialSection = 'overview', initialLessonOpe
       if (profile) {
         setFirstName(profile.firstName);
         setSessions(profile.lessons);
+        setSecurityAwardedIds(profile.security?.awardedQuestionIds ?? []);
+        setSecurityCompleted(profile.security?.completed ?? false);
         if (profile.securityExplored) setSecurityExplored(true);
       }
     } catch {
@@ -71,11 +78,11 @@ export default function KodeoApp({ initialSection = 'overview', initialLessonOpe
   useEffect(() => {
     if (!profileReady || !firstName || !storageAvailable) return;
     try {
-      localStorage.setItem(PROFILE_KEY, JSON.stringify({ firstName, lessons: sessions, securityExplored }));
+      localStorage.setItem(PROFILE_KEY, JSON.stringify({ firstName, lessons: sessions, securityExplored, security: { awardedQuestionIds: securityAwardedIds, completed: securityCompleted } }));
     } catch {
       setStorageAvailable(false);
     }
-  }, [profileReady, firstName, sessions, securityExplored, storageAvailable]);
+  }, [profileReady, firstName, sessions, securityExplored, securityAwardedIds, securityCompleted, storageAvailable]);
 
   function lessonDispatch(action: LessonAction) {
     setSessions(current => {
@@ -99,9 +106,11 @@ export default function KodeoApp({ initialSection = 'overview', initialLessonOpe
     const requested = params.get('etapa');
     setLessonId(path === '/licoes/variaveis' && isJavascriptLesson(requested) ? requested : 'js-6');
     setLessonOpen(path === '/licoes/variaveis');
-    setSection(['/trilhas', '/licoes/variaveis'].includes(path) ? 'courses' : params.get('view') === 'achievements' ? 'achievements' : 'overview');
+    setSecurityQuizOpen(path === '/licoes/ciberseguranca');
+    setSection(['/trilhas', '/licoes/variaveis', '/licoes/ciberseguranca'].includes(path) ? 'courses' : params.get('view') === 'achievements' ? 'achievements' : 'overview');
     const id = params.get('trilha');
     if (trails.some(trail => trail.id === id)) setSelectedTrail(id as TrailId);
+    else if (path === '/licoes/ciberseguranca') setSelectedTrail('security');
     else if (path === '/trilhas') setSelectedTrail('javascript');
     if (path === '/trilhas' && id === 'security') setSecurityExplored(true);
     setMobileOpen(false);
@@ -113,11 +122,11 @@ export default function KodeoApp({ initialSection = 'overview', initialLessonOpe
     return () => window.removeEventListener('popstate', onPopState);
   }, [restoreLocation]);
   useEffect(() => {
-    if (focusHeading.current && !lessonOpen) {
+    if (focusHeading.current && !lessonOpen && !securityQuizOpen) {
       focusHeading.current = false;
       headingRef.current?.focus();
     }
-  }, [section, lessonOpen, selectedTrail]);
+  }, [section, lessonOpen, securityQuizOpen, selectedTrail]);
   function toggleTheme() {
     const next = mode === 'light' ? 'dark' : 'light';
     setMode(next);
@@ -141,6 +150,17 @@ export default function KodeoApp({ initialSection = 'overview', initialLessonOpe
   function closeLesson() {
     focusHeading.current = true;
     window.history.pushState(null, '', lessonReturnUrl);
+    restoreLocation();
+  }
+  function openSecurityQuiz() {
+    setSecurityReturnUrl(window.location.pathname + window.location.search);
+    setSecurityQuizOpen(true);
+    setMobileOpen(false);
+    window.history.pushState(null, '', appUrl('/licoes/ciberseguranca'));
+  }
+  function closeSecurityQuiz() {
+    focusHeading.current = true;
+    window.history.pushState(null, '', securityReturnUrl);
     restoreLocation();
   }
   function navigate(next: Section, trailId: TrailId = selectedTrail) {
@@ -174,7 +194,7 @@ export default function KodeoApp({ initialSection = 'overview', initialLessonOpe
       <section className="section-block"><div className="section-title"><h2>Seu plano de hoje</h2><span className="muted">{1 + Number(lessonDone) + Number(securityExplored)} de 3 concluídas</span></div><div className="task-list"><div className="task-row completed"><span className="task-check"><Check size={15}/></span><div><strong>Dar o primeiro passo</strong><p>Acesse sua jornada e prepare-se para aprender.</p></div><span className="task-status">Concluído</span></div><div className={`task-row ${lessonDone ? 'completed' : ''}`}><span className={`task-check ${lessonDone ? '' : 'pending'}`}>{lessonDone ? <Check size={15}/> : <Play size={13}/>}</span><div><strong>Uma nova habilidade</strong><p>Conclua a lição de variáveis e tipos de dados.</p></div><button className="task-action" onClick={() => openLesson("js-6")}>{lessonDone ? 'Revisar' : 'Praticar'}<ArrowRight size={15}/></button></div><div className={`task-row ${securityExplored ? 'completed' : ''}`}><span className={`task-check ${securityExplored ? '' : 'pending'}`}>{securityExplored ? <Check size={15}/> : <Target size={15}/>}</span><div><strong>Explore um novo caminho</strong><p>Conheça a trilha de introdução à cibersegurança.</p></div><button className="task-action" onClick={() => navigate('courses', 'security')}>Explorar<ArrowRight size={15}/></button></div></div></section></div>
       <aside className="secondary-column"><section className="panel level-panel"><div className="panel-heading"><h2>Seu próximo nível</h2><Sparkles size={17}/></div><div className="level-symbol"><span><GraduationCap size={31}/></span><b>{level.level}</b></div><h3>Nível {level.level}</h3><p>Cada descoberta te leva mais longe.</p><div className="xp-label"><strong>{xp.toLocaleString('pt-BR')} XP</strong><span>{level.next === null ? 'Nível máximo da prévia' : `${level.next.toLocaleString('pt-BR')} XP`}</span></div><LinearProgress variant="determinate" value={level.percent} aria-label={level.next === null ? 'Nível máximo da prévia' : `Progresso para o nível ${level.level + 1}`}/><div className="next-level">{level.next === null ? 'Você alcançou o último nível desta prévia.' : <>Faltam <strong>{level.remaining.toLocaleString('pt-BR')} XP</strong> para o nível {level.level + 1}</>}</div>{level.next !== null && <div className="level-bottom"><span>Nível {level.level + 1}</span><strong>Próxima descoberta <ArrowUpRight size={14}/></strong></div>}</section><section className="panel weekly-panel"><div className="panel-heading"><h2>Constância é tudo</h2><Flame size={18}/></div><p>Você estudou em <strong>3 dias</strong> nesta semana.</p><div className="week-days" aria-hidden="true">{['S', 'T', 'Q', 'Q', 'S', 'S', 'D'].map((day, index) => <div key={index}><span>{day}</span><i className={index < 3 ? 'day done' : 'day'}>{index < 3 ? <Check size={14}/> : <span/>}</i></div>)}</div><div className="weekly-message"><span/> Continue cultivando esse hábito.</div></section></aside></div>
     </>}
-    {section === 'courses' && <TrailExplorer progress={progress} selectedTrail={selectedTrail} onSelectTrail={selectTrail} onOpenLesson={openLesson}/>}
+    {section === 'courses' && <TrailExplorer progress={progress} selectedTrail={selectedTrail} onSelectTrail={selectTrail} onOpenLesson={id => id === 'sec-quiz' ? openSecurityQuiz() : openLesson(id)}/>}
     {section === 'overview' && <section className="section-block courses-section"><div className="section-title"><div><h2>{section === 'overview' ? 'Suas trilhas de aprendizado' : 'Encontre seu caminho'}</h2><p>Conhecimento que cresce junto com você.</p></div>{section === 'overview' && <button className="text-action" onClick={() => navigate('courses')}>Ver todas as trilhas<ArrowRight size={16}/></button>}</div><div className="courses-grid">{courses.map(course => { const Icon = icons[course.icon]; const courseProgress = trailProgress(trails.find(trail => trail.id === course.id)!, progress); return <article className="course-card" key={course.id}><div className="course-top"><span className={`course-icon ${course.color}`}><Icon size={23}/></span><span className={`course-tag ${course.color}`}>{course.tag}</span></div><span className="course-category">{course.category}</span><h3>{course.title}</h3><p>{course.description}</p><div className="course-progress-label"><span>{courseProgress.completed} de {courseProgress.total} lições</span><strong>{courseProgress.percent}%</strong></div><LinearProgress variant="determinate" value={courseProgress.percent} aria-label={`Progresso em ${course.title}`}/><button className="course-link" onClick={() => navigate('courses', course.id)}>{courseProgress.percent === 100 ? 'Revisar trilha' : courseProgress.percent === 0 ? 'Conhecer trilha' : 'Continuar trilha'}<ArrowUpRight size={17}/></button></article>; })}</div></section>}
     {section !== 'courses' && <section className="section-block achievement-section"><div className="section-title"><div><h2>{section === 'achievements' ? 'Suas conquistas' : 'Pequenas vitórias, grandes passos'}</h2><p>Seu esforço deixa marcas.</p></div>{section === 'overview' && <button className="text-action" onClick={() => navigate('achievements')}>Ver conquistas<ArrowRight size={16}/></button>}</div><div className="achievements-grid">{[{name:'Primeiros passos', description:'Sua primeira lição concluída', icon: BookOpen, color:'blue', unlocked:true},{name:'Na mosca',description:'10 respostas corretas',icon:Target,color:'green',unlocked:true},{name:'Persistente',description:'3 dias seguidos aprendendo',icon:Flame,color:'amber',unlocked:true},{name:'Mais um passo',description:'Conclua a lição de variáveis',icon:Trophy,color:'purple',unlocked:lessonDone}].map(item => <div className={`achievement ${!item.unlocked ? 'locked' : ''}`} key={item.name}><span className={`achievement-icon ${item.color}`}><item.icon size={23}/></span><div><h3>{item.name}</h3><p>{item.description}</p></div>{item.unlocked ? <CheckCircle2 size={16} className="achievement-check"/> : <LockKeyhole size={15}/>}</div>)}</div></section>}
     <footer className="page-footer"><span><Code2 size={15}/> Feito para quem nunca para de aprender.</span><span>Kodeo · um passo de cada vez</span></footer>
@@ -192,6 +212,7 @@ export default function KodeoApp({ initialSection = 'overview', initialLessonOpe
       </form>
     </Dialog>
     <LessonWorkspace key={lessonId} lesson={lesson} open={profileReady && !!firstName && lessonOpen && canOpenLesson} mode={mode} state={lessonState} dispatch={lessonDispatch} onExit={closeLesson} onToggleTheme={toggleTheme}/>
+    <SecurityQuiz open={profileReady && !!firstName && securityQuizOpen} mode={mode} completed={securityCompleted} onExit={closeSecurityQuiz} onAwardQuestion={id => setSecurityAwardedIds(current => current.includes(id) ? current : [...current, id])} onComplete={() => setSecurityCompleted(true)}/>
     <Dialog aria-labelledby="info-title" open={!!info} onClose={() => setInfo(null)} fullWidth maxWidth="sm"><DialogTitle id="info-title">Seu aprendizado no Kodeo</DialogTitle><DialogContent><p>{info}</p></DialogContent><DialogActions><Button onClick={() => setInfo(null)}>Entendi</Button></DialogActions></Dialog>
   </div></ThemeProvider>;
 }

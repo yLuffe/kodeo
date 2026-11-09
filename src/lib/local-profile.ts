@@ -1,8 +1,10 @@
 import { isJavascriptLesson, javascriptLessons } from './javascript-course';
 import type { LessonState } from './lesson-session';
+import { securityQuestions } from './security-questions';
 
 export const PROFILE_KEY = 'kodeo:profile:v1';
-export type LocalProfile = { firstName: string; lessons: Record<string, LessonState>; securityExplored: boolean };
+export type SecurityProgress = { awardedQuestionIds: string[]; completed: boolean };
+export type LocalProfile = { firstName: string; lessons: Record<string, LessonState>; securityExplored: boolean; security?: SecurityProgress };
 
 export function firstNameFrom(value: string) {
   return (value.trim().split(/\s+/u)[0] ?? '').slice(0, 40);
@@ -22,7 +24,10 @@ export function readProfile(raw: string | null): LocalProfile | null {
           state.xpEvents.some(event => !event || !Number.isFinite(event.amount))) continue;
       lessons[id] = state;
     }
-    return { firstName: firstNameFrom(saved.firstName), lessons, securityExplored: saved.securityExplored === true };
+    const validIds = new Set(securityQuestions.map(question => question.id));
+    const awardedQuestionIds = [...new Set(Array.isArray(saved.security?.awardedQuestionIds) ? saved.security.awardedQuestionIds.filter(id => typeof id === 'string' && validIds.has(id)) : [])];
+    const security = saved.security ? { security: { awardedQuestionIds, completed: saved.security.completed === true } } : {};
+    return { firstName: firstNameFrom(saved.firstName), lessons, securityExplored: saved.securityExplored === true, ...security };
   } catch {
     return null;
   }
