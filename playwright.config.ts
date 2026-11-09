@@ -12,6 +12,10 @@ export default defineConfig({
   use: {
     baseURL: 'http://127.0.0.1:3100',
     browserName: 'chromium',
+    storageState: { cookies: [], origins: [{
+      origin: 'http://127.0.0.1:3100',
+      localStorage: [{ name: 'kodeo:profile:v1', value: JSON.stringify({ firstName: 'Kodeo', lessons: {}, securityExplored: false }) }],
+    }] },
     launchOptions: {
       executablePath: process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH,
     },

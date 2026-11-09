@@ -5,7 +5,7 @@ test('fluxo completo: erro, retomada, conclusão, mapa e revisão sem XP duplica
   const errors: string[] = [];
   page.on('pageerror', error => errors.push(error.message));
   await page.goto('/');
-  await expect(page.locator('.demo-notice')).toContainText('Recarregar reinicia');
+  await expect(page.locator('.demo-notice')).toContainText('ficam salvos neste navegador');
   await noOverflow(page);
   await begin(page);
   const dialog = page.locator('.lesson-dialog');
@@ -43,18 +43,20 @@ test('fluxo completo: erro, retomada, conclusão, mapa e revisão sem XP duplica
   await navigate(page, 'Minhas trilhas');
   await expect(page.locator('.map-progress')).toContainText('6 de 12');
   await expect(page.getByRole('button', { name: /Etapa 7: Operadores. Em andamento/ })).toBeVisible();
-  await navigate(page, 'Visão geral');
-  await begin(page);
+  await page.getByRole('button', { name: /Etapa 6: Variáveis e tipos/ }).click();
+  await page.getByRole('button', { name: 'Revisar lição', exact: true }).click();
+  await page.getByRole('button', { name: 'Começar revisão', exact: true }).click();
   await finishQuestions(page);
   await expect(dialog.locator('.lesson-summary-stats')).toContainText('0 XP');
   await dialog.getByRole('button', { name: 'Voltar ao meu aprendizado' }).click();
+  await navigate(page, 'Visão geral');
   await expect(page.locator('.stats-grid')).toContainText('1.340');
   await page.getByRole('button', { name: 'Kodeo, início' }).isVisible().then(async visible => {
     if (visible) await page.getByRole('button', { name: 'Kodeo, início' }).click();
   });
   await expect(page.locator('.stats-grid')).toContainText('1.340');
   await page.reload();
-  await expect(page.locator('.stats-grid')).toContainText('1.240');
+  await expect(page.locator('.stats-grid')).toContainText('1.340');
   expect(errors).toEqual([]);
 });
 
@@ -120,6 +122,8 @@ test('tema funciona mesmo se o navegador bloquear armazenamento', async ({ page 
     Storage.prototype.setItem = () => { throw new DOMException('Blocked', 'SecurityError'); };
   });
   await page.goto('/');
+  await page.getByRole('textbox', { name: 'Primeiro nome' }).fill('Kodeo');
+  await page.getByRole('button', { name: 'Começar', exact: true }).click();
   await page.getByRole('button', { name: 'Ativar modo escuro', exact: true }).click();
   await expect(page.locator('.app').first()).toHaveAttribute('data-theme', 'dark');
   await begin(page);

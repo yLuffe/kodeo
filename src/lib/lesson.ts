@@ -3,8 +3,9 @@ import { gamification } from './learning';
 interface QuestionBase { id: string; title: string; context: string; explanation: string; hint: string; xp: number; }
 export interface ChoiceQuestion extends QuestionBase { type: 'choice'; options: string[]; correct: number; code?: string; incorrectFeedback?: string[]; }
 export interface TextQuestion extends QuestionBase { type: 'text'; accepted: string[]; placeholder: string; }
-export interface CodeQuestion extends QuestionBase { type: 'code'; challenge: 'points' | 'profile'; starter: string; criteria: string[]; solution: string; }
+export interface CodeQuestion extends QuestionBase { type: 'code'; challenge: 'points' | 'profile'; expectedName?: string; starter: string; criteria: string[]; solution: string; }
 export type LessonQuestion = ChoiceQuestion | TextQuestion | CodeQuestion;
+export interface LessonDefinition { id: string; title: string; module: string; course: string; minutes: number; questions: LessonQuestion[]; introduction?: string; example?: string; }
 export const lesson = {
   id: 'js-6', title: 'Variáveis e tipos de dados', module: 'Dados e decisões', course: 'Fundamentos de JavaScript', minutes: 8,
   questions: [

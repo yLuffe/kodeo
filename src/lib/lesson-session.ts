@@ -1,6 +1,6 @@
 import { evaluateAnswer } from './answer-validation';
 import type { AnswerResult } from './answer-validation';
-import { lesson } from './lesson';
+import { lesson as defaultLesson, type LessonDefinition } from './lesson';
 import { gamification } from './learning';
 
 export interface Attempt { questionId: string; answer: string; correct: boolean; submittedAt: string; number: number; xpAwarded: number; review: boolean; }
@@ -9,7 +9,7 @@ export interface LessonState { phase: 'intro' | 'practice' | 'summary'; index: n
 export type LessonAction = { type: 'start' } | { type: 'draft'; questionId: string; answer: string } | { type: 'submit'; questionId: string; submittedAt: string } | { type: 'retry'; questionId: string } | { type: 'next'; at: string } | { type: 'review' } | { type: 'previous' };
 export function initialLessonState(): LessonState { return { phase: 'intro', index: 0, drafts: {}, results: {}, attempts: [], xpEvents: [], completed: false, review: false, reviewOffset: 0 }; }
 export const lessonXP = (state: LessonState) => state.xpEvents.reduce((total, event) => total + event.amount, 0);
-export function lessonReducer(state: LessonState, action: LessonAction): LessonState {
+export function lessonReducer(state: LessonState, action: LessonAction, lesson: LessonDefinition = defaultLesson): LessonState {
   if (action.type === 'start') return state.phase === 'intro' ? { ...state, phase: 'practice' } : state;
   if (action.type === 'review') return state.completed ? { ...state, phase: 'intro', index: 0, drafts: {}, results: {}, review: true, reviewOffset: state.attempts.length } : state;
   if (action.type === 'previous') return state.phase === 'practice' && state.index > 0 ? { ...state, index: state.index - 1 } : state;
