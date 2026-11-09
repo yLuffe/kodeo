@@ -101,8 +101,8 @@ test('mapa e lista: bloqueios explicados, filtros e etapa sem conteúdo', async 
   await page.getByRole('button', { name: 'Voltar ao mapa' }).click();
   await page.getByRole('button', { name: 'Ver como lista' }).click();
   await page.getByRole('button', { name: /Introdução à cibersegurança/ }).click();
-  await page.getByRole('button', { name: /Etapa 1: O que estamos protegendo/ }).click();
-  await expect(page.getByRole('dialog')).toContainText('O conteúdo interativo desta lição será adicionado');
+  await page.getByRole('button', { name: /Etapa 2: O que estamos protegendo/ }).click();
+  await expect(page.getByRole('dialog')).toContainText('Concluir a etapa anterior');
   await expect(page.getByRole('button', { name: 'Continuar lição', exact: true })).toHaveCount(0);
   await page.getByRole('button', { name: 'Voltar ao mapa' }).click();
   await page.getByRole('button', { name: /Bloqueadas/ }).click();

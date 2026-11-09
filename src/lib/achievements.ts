@@ -17,7 +17,7 @@ export function achievementProgress(sessions: Record<string, LessonState>) {
   const states = Object.values(sessions);
   const events = states.flatMap(state => state.xpEvents);
   const answers = events.filter(event => event.reason === 'question').length;
-  const completed = states.filter(state => state.completed).length;
+  const completed = Object.entries(sessions).filter(([id, state]) => id.startsWith("js-") && state.completed).length;
   const recovered = states.some(state => {
     const missed = new Set<string>();
     return state.attempts.some(attempt => {
@@ -35,5 +35,6 @@ export function achievementProgress(sessions: Record<string, LessonState>) {
     { id: 'xp', name: 'XP em alta', description: 'Ganhe 250 XP nas atividades.', current: events.reduce((sum, event) => sum + event.amount, 0), target: 250, color: 'amber' },
     { id: 'code', name: 'Mãos no código', description: 'Resolva os dois desafios de código da etapa 6.', current: events.filter(event => event.reason === 'question' && ['points', 'profile'].includes(event.sourceId)).length, target: 2, color: 'green' },
     { id: 'javascript', name: 'Base de JavaScript', description: 'Conclua as 6 lições práticas, das etapas 6 a 11.', current: completed, target: 6, color: 'purple' },
+    { id: 'cyber', name: 'Olhar de defensor', description: 'Conclua os desafios de cibersegurança.', current: Number(!!sessions['sec-quiz']?.completed), target: 1, color: 'blue' },
   ];
 }

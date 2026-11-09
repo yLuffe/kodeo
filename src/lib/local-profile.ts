@@ -1,4 +1,4 @@
-import { isJavascriptLesson, javascriptLessons } from './javascript-course';
+import { isCourseLesson, courseLesson } from './course-lessons';
 import type { LessonState } from './lesson-session';
 
 export const PROFILE_KEY = 'kodeo:profile:v1';
@@ -15,9 +15,9 @@ export function readProfile(raw: string | null): LocalProfile | null {
     if (typeof saved?.firstName !== 'string' || !firstNameFrom(saved.firstName)) return null;
     const lessons: LocalProfile['lessons'] = {};
     for (const [id, state] of Object.entries(saved.lessons ?? {})) {
-      if (!isJavascriptLesson(id) || !state ||
+      if (!isCourseLesson(id) || !state ||
           !['intro', 'practice', 'summary'].includes(state.phase) ||
-          !Number.isInteger(state.index) || state.index < 0 || state.index >= javascriptLessons[id].questions.length ||
+          !Number.isInteger(state.index) || state.index < 0 || state.index >= courseLesson(id).questions.length ||
           !state.drafts || !state.results || !Array.isArray(state.attempts) || !Array.isArray(state.xpEvents) ||
           state.xpEvents.some(event => !event || !Number.isFinite(event.amount))) continue;
       lessons[id] = state;

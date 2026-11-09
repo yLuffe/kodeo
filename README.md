@@ -1,145 +1,62 @@
-<div align="center">
+# Kodeo
 
-# ⌘ Kodeo
+Plataforma gamificada para praticar JavaScript e cibersegurança. O aluno percorre trilhas, responde a exercícios, recebe explicações e acompanha seu progresso por XP e conquistas.
 
-**Aprenda. Pratique. Evolua.**
-
-Uma plataforma gamificada para aprender programação e cibersegurança,<br />
-uma descoberta de cada vez.
-
-![Status: protótipo](https://img.shields.io/badge/status-prot%C3%B3tipo-143352?style=flat-square)
-![Next.js](https://img.shields.io/badge/Next.js-App_Router-202938?style=flat-square)
-![React](https://img.shields.io/badge/React-interface-345e8b?style=flat-square)
-![TypeScript](https://img.shields.io/badge/TypeScript-tipado-345e8b?style=flat-square)
-![Material UI](https://img.shields.io/badge/Material_UI-design_system-345e8b?style=flat-square)
-
-[O projeto](#o-projeto) · [Funcionalidades](#funcionalidades) · [Começar](#começar) · [Roadmap](#roadmap)
-
-</div>
-
----
-
-## O projeto
-
-O Kodeo transforma o estudo em uma jornada: você percorre trilhas, pratica com questões, entende seus erros e acompanha sua evolução com XP, níveis e conquistas.
-
-A proposta é simples: **a gamificação apoia o aprendizado, e o conteúdo continua sendo o foco.** Interface clara, arquitetura enxuta e desenvolvimento incremental orientam cada etapa.
+**[Abrir o Kodeo](https://yluffe.github.io/kodeo/)** · [Guia da trilha de JavaScript](docs/JAVASCRIPT.md)
 
 ## Funcionalidades
 
-| Área | O que você encontra |
+| Área | O que funciona hoje |
 | --- | --- |
-| **Dashboard** | Tarefas do dia, progresso, experiência, níveis e conquistas. |
-| **Mapa de aprendizado** | Percursos pontilhados em formato de tabuleiro, com etapas selecionáveis. |
-| **Biblioteca de trilhas** | Blocos compactos, filtros por status e visualização alternativa em lista. |
-| **Desbloqueios** | Requisitos explícitos de nível, XP, etapa anterior e conclusão de outras trilhas. |
-| **Prática** | Lição de JavaScript com alternativas, resposta escrita, editor de código e feedback por critério. |
-| **Aparência** | Temas claro e escuro, azul sóbrio e layout responsivo. |
-| **Acessibilidade** | Estados com texto e ícones, foco visível e respeito à redução de movimento. |
+| **Perfil de demonstração** | A primeira visita pede o primeiro nome. O perfil, os rascunhos, as tentativas e o progresso ficam salvos no navegador. |
+| **Painel de aprendizado** | Mostra o nível, o XP, as tarefas e o próximo exercício recomendado. A meta semanal registra dias em que o aluno praticou. |
+| **Trilhas** | Etapas com status, requisitos de desbloqueio e filtros. A lista abre por padrão no celular, com opção de alternar para o mapa. |
+| **JavaScript** | Etapas 1 a 5 com leitura, exemplos e revisão. Etapas 6 a 11 com 25 exercícios, entre alternativas, resposta escrita e desafios de código. |
+| **Cibersegurança** | A primeira atividade da trilha tem 20 questões com quatro alternativas, dicas, explicações e retomada após recarregar. |
+| **Feedback e recompensas** | A resposta recebe correção imediata. A barra mostra o XP conquistado na lição e a primeira conclusão libera a próxima etapa quando os requisitos são cumpridos. |
+| **Conquistas** | Nove metas ligadas a ações como corrigir um erro, resolver desafios de código e concluir a prática de cibersegurança. Revisões não duplicam XP. |
+| **Mobile e acessibilidade** | Layout adaptável, alvos de toque maiores, temas claro e escuro, foco visível, controles com nomes acessíveis e suporte à preferência por movimento reduzido. |
 
-> **Estágio atual:** protótipo com perfil local e dados simulados. Na primeira visita, informe o primeiro nome. O navegador salva rascunhos, tentativas, XP e conclusões. Veja o [guia de JavaScript](docs/JAVASCRIPT.md).
+O perfil é demonstrativo e vale para o navegador e o endereço usados. Limpar os dados do site reinicia a demonstração. As cinco primeiras etapas de JavaScript e o XP inicial já vêm preenchidos para facilitar a apresentação. O XP de Cyber soma no total geral, enquanto a conclusão avança apenas a trilha de cibersegurança.
 
-### Ambiente de lições
+## Stack
 
-As etapas 1 a 5 têm leitura rápida e uma pergunta de revisão no mapa. As etapas 6 a 11 têm exercícios interativos com dicas e feedback. A etapa 6 também inclui resposta escrita e editor de código. O código submetido é analisado por critérios com Acorn, sem ser executado.
+| Tecnologia | Papel no Kodeo |
+| --- | --- |
+| **Next.js** | Organiza as rotas com App Router. O build pode exportar as páginas para HTML estático e publicá-las no GitHub Pages. |
+| **React + TypeScript** | React mantém o estado da interface e das lições. TypeScript define os contratos de questões, respostas, progresso e recompensas. |
+| **Material UI + Emotion** | Fornecem botões, formulários, diálogos e barras de progresso com um tema compartilhado. CSS adapta o layout ao tamanho da tela. |
+| **Lucide** | Fornece os ícones da navegação, dos estados e das recompensas. |
+| **Acorn** | Analisa a sintaxe dos exercícios de código e verifica critérios específicos. O código digitado não é executado. |
+| **localStorage** | Guarda o perfil e as sessões de prática localmente, sem conta externa ou chave de API. |
+| **Playwright + Node.js** | Playwright verifica os fluxos no navegador em projetos desktop e mobile. Node.js executa os testes unitários das regras de negócio. |
+| **GitHub Actions + Pages** | Actions valida os PRs e publica a exportação estática após mudanças na `main`. Pages hospeda os arquivos gerados. |
 
-O protótipo usa um perfil por navegador e endereço do site. Limpar os dados do site reinicia a demonstração. As primeiras cinco etapas e o XP inicial continuam preenchidos para a apresentação. Revisar uma etapa concluída não concede XP novamente.
+**Planejado para as próximas fases:** autenticação, sincronização entre dispositivos e validação de respostas e recompensas no servidor com Supabase e PostgreSQL.
 
-## Tecnologias
+## Executar localmente
 
-- **Next.js + React** — aplicação com App Router.
-- **TypeScript** — tipos para dados, componentes e regras de acesso.
-- **Material UI + Emotion** — componentes e tema centralizado.
-- **Lucide** — ícones da interface.
-- **Acorn** — análise de sintaxe dos exercícios de código, sem execução.
-- **Supabase + PostgreSQL** — planejados para autenticação, persistência e políticas de acesso.
-
-## Começar
-
-Requisitos: **Node.js 20.9+** e **pnpm**.
+Requisitos: Node.js 24 e pnpm 11.
 
 ```bash
 git clone https://github.com/yLuffe/kodeo.git
 cd kodeo
-pnpm install
+pnpm install --frozen-lockfile
 pnpm dev
 ```
 
-Abra **[localhost:3000](http://localhost:3000)** para o dashboard ou **[localhost:3000/trilhas](http://localhost:3000/trilhas)** para o mapa de aprendizado.
+Abra [localhost:3000](http://localhost:3000). O mapa fica em `/trilhas`, a prática de JavaScript começa em `/licoes/variaveis` e o quiz de Cyber fica em `/licoes/ciberseguranca`.
 
-Nenhuma conta externa ou chave de API é necessária para executar o protótipo.
-
-### Verificação e produção
+## Validar e publicar
 
 ```bash
-pnpm typecheck  # Verificar tipos
-pnpm test       # Testar regras de progressão e desbloqueio
-pnpm build      # Gerar a versão de produção
-pnpm start      # Executar a versão compilada
-```
-
-### GitHub Pages
-
-Em **Settings → Pages → Build and deployment**, selecione **GitHub Actions** como fonte.
-O workflow **Publicar Kodeo no GitHub Pages** roda a cada envio à `main` e também pode ser
-iniciado manualmente pela aba **Actions**. A URL publicada aparece no resultado do deploy.
-
-O workflow gera `out/index.html` e um índice para cada rota. O prefixo do repositório
-é aplicado aos arquivos estáticos e à navegação. Para testar a exportação localmente:
-
-```bash
+pnpm typecheck
+pnpm test
+pnpm exec playwright install chromium
+pnpm test:e2e
 KODEO_STATIC_EXPORT=1 KODEO_BASE_PATH=/kodeo pnpm build
 ```
 
-Essa publicação serve a versão estática da Fase 1, com dados simulados.
+O GitHub Pages usa **GitHub Actions** como fonte em **Settings → Pages → Build and deployment**. O workflow gera `out/index.html` e os índices das rotas, incluindo o prefixo `/kodeo`. A aba **Actions** mostra o status e a URL da publicação.
 
-### Regressão de navegação no navegador
-
-```bash
-pnpm exec playwright install chromium  # Preparar o navegador uma vez
-pnpm test:e2e                          # Compilar, iniciar e testar a aplicação
-```
-
-A suíte cobre o botão **Explorar** da tarefa de cibersegurança, a lição completa, retomada, erros, teclado, editor, conclusão e revisão sem XP duplicado. Executa cenários em desktop e mobile, incluindo uma verificação em 320 px. O servidor de teste usa a porta 3100. Para usar um Chromium já instalado, defina `PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH` com o caminho do executável.
-
-## Organização
-
-```text
-src/
-├── app/                 # Rotas, layout e estilos globais
-│   └── trilhas/          # Tela do mapa de aprendizado
-├── components/          # Interface, tema e componentes das trilhas
-└── lib/                 # Dados simulados e regras de gamificação
-
-tests/                   # Testes das regras de acesso e progressão
-```
-
-As regras de nível, requisitos e acesso às etapas ficam em `src/lib/trails.ts`. Cursos e recompensas demonstrativas ficam em `src/lib/learning.ts`; questões em `src/lib/lesson.ts`. Os valores exibidos de XP e progresso são derivados em `src/lib/progress.ts`.
-
-## Roadmap
-
-- [x] Dashboard com perfil demonstrativo.
-- [x] Temas claro e escuro.
-- [x] Mapa interativo e biblioteca de trilhas.
-- [x] Requisitos de acesso por nível, XP e pré-requisitos.
-- [x] Lição com formulários, feedback, exercícios de código e atualização de progresso.
-- [x] Progresso compartilhado entre dashboard e mapa, níveis dinâmicos e navegação sem reiniciar a sessão.
-- [x] Menu mobile com controle de foco e Escape; aviso explícito dos dados simulados.
-- [x] Testes do fluxo da Fase 1 em desktop e mobile.
-- [ ] Expandir os conteúdos e as atividades das lições.
-- [ ] Integrar Supabase Auth, PostgreSQL e Row Level Security.
-- [ ] Persistir tentativas, progresso, conquistas e histórico de XP.
-- [ ] Validar respostas e recompensas no servidor.
-- [ ] Refinar a acessibilidade e realizar testes de usabilidade.
-
-## Cuidados com configuração
-
-Arquivos de ambiente, chaves privadas, credenciais locais e saídas de compilação ficam fora do versionamento. Exemplos de configuração devem conter somente valores fictícios. Na integração futura com Supabase, chaves administrativas serão usadas exclusivamente no servidor.
-
----
-
-<div align="center">
-
-**Um passo de cada vez. Um pouco melhor a cada descoberta.**
-
-</div>
+O [registro da Fase 1](docs/FASE_1.md) descreve a entrega inicial. As regras de XP e acesso ficam em `src/lib`; as telas e seus estilos ficam em `src/app` e `src/components`.

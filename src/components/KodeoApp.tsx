@@ -12,12 +12,14 @@ import { trails, stepStatus } from '@/lib/trails';
 import { learnerProgress, levelProgress, totalCompleted, trailProgress } from '@/lib/progress';
 import type { TrailId } from '@/lib/trails';
 
-import { isJavascriptLesson, lessonForProfile } from '@/lib/javascript-course';
+import { isJavascriptLesson } from '@/lib/javascript-course';
+import { courseLesson, isCourseLesson, securityLessonId } from '@/lib/course-lessons';
 import { achievementProgress, studyWeek } from '@/lib/achievements';
 import { firstNameFrom, PROFILE_KEY, readProfile } from '@/lib/local-profile';
 
 const emptyLesson = initialLessonState();
 const javascript = trails.find(trail => trail.id === 'javascript')!;
+const security = trails.find(trail => trail.id === 'security')!;
 
 type Section = 'overview' | 'courses' | 'achievements';
 const basePath = process.env.NEXT_PUBLIC_KODEO_BASE_PATH ?? '';
@@ -27,34 +29,35 @@ function appUrl(path: string, query = '') {
   return basePath + path + suffix + query;
 }
 
-export default function KodeoApp({ initialSection = 'overview', initialLessonOpen = false }: { initialSection?: Section; initialLessonOpen?: boolean }) {
+export default function KodeoApp({ initialSection = 'overview', initialLessonOpen = false, initialLessonId = 'js-6' }: { initialSection?: Section; initialLessonOpen?: boolean; initialLessonId?: string }) {
   const [mode, setMode] = useState<'light' | 'dark'>('light');
   const [section, setSection] = useState<Section>(initialSection);
-  const [selectedTrail, setSelectedTrail] = useState<TrailId>('javascript');
+  const [selectedTrail, setSelectedTrail] = useState<TrailId>(initialLessonId === securityLessonId ? 'security' : 'javascript');
   const [mobileOpen, setMobileOpen] = useState(false);
   const [securityExplored, setSecurityExplored] = useState(false);
   const isMobile = useMediaQuery('(max-width:760px)');
   const headingRef = useRef<HTMLHeadingElement>(null);
   const focusHeading = useRef(false);
   const [lessonOpen, setLessonOpen] = useState(initialLessonOpen);
-  const [lessonReturnUrl, setLessonReturnUrl] = useState(appUrl('/trilhas', '?trilha=javascript'));
+  const [lessonReturnUrl, setLessonReturnUrl] = useState(appUrl('/trilhas', initialLessonId === securityLessonId ? '?trilha=security' : '?trilha=javascript'));
   const [info, setInfo] = useState<string | null>(null);
   const [profileReady, setProfileReady] = useState(false);
   const [firstName, setFirstName] = useState('');
   const [nameInput, setNameInput] = useState('');
   const [storageAvailable, setStorageAvailable] = useState(true);
   const [sessions, setSessions] = useState<Record<string, LessonState>>({});
-  const [lessonId, setLessonId] = useState('js-6');
-  const lesson = useMemo(() => lessonForProfile(lessonId, firstName), [lessonId, firstName]);
+  const [lessonId, setLessonId] = useState(initialLessonId);
+  const lesson = useMemo(() => courseLesson(lessonId, firstName), [lessonId, firstName]);
   const lessonState = sessions[lessonId] ?? emptyLesson;
   const firstLesson = sessions['js-6'] ?? emptyLesson;
   const lessonDone = firstLesson.completed;
-  const progress = learnerProgress(firstLesson, Object.entries(sessions).filter(([id]) => id !== 'js-6').map(([, state]) => state));
-  const activeLessonIndex = javascript.steps.findIndex(step => step.id === lessonId);
-  const canOpenLesson = stepStatus(javascript, activeLessonIndex, progress) !== 'locked';
+  const progress = learnerProgress(firstLesson, Object.entries(sessions).filter(([id]) => id !== 'js-6' && isJavascriptLesson(id)).map(([, state]) => state), sessions[securityLessonId]);
+  const activeTrail = lessonId === securityLessonId ? security : javascript;
+  const activeLessonIndex = activeTrail.steps.findIndex(step => step.id === lessonId);
+  const canOpenLesson = stepStatus(activeTrail, activeLessonIndex, progress) !== 'locked';
   const nextLesson = javascript.steps.find((step, index) => step.playable && !sessions[step.id]?.completed && stepStatus(javascript, index, progress) !== 'locked');
-  const followingLesson = javascript.steps[activeLessonIndex + 1];
-  const nextPractice = followingLesson?.playable && stepStatus(javascript, activeLessonIndex + 1, progress) !== 'locked' ? followingLesson : undefined;
+  const followingLesson = activeTrail.steps[activeLessonIndex + 1];
+  const nextPractice = followingLesson?.playable && stepStatus(activeTrail, activeLessonIndex + 1, progress) !== 'locked' ? followingLesson : undefined;
   const avatar = Array.from(firstName)[0]?.toLocaleUpperCase('pt-BR') ?? 'K';
 
   useEffect(() => {
@@ -106,13 +109,15 @@ export default function KodeoApp({ initialSection = 'overview', initialLessonOpe
     const params = new URLSearchParams(window.location.search);
     const path = window.location.pathname.slice(basePath.length).replace(/\/$/, '') || '/';
     const requested = params.get('etapa');
-    setLessonId(path === '/licoes/variaveis' && isJavascriptLesson(requested) ? requested : 'js-6');
-    setLessonOpen(path === '/licoes/variaveis');
-    setSection(['/trilhas', '/licoes/variaveis'].includes(path) ? 'courses' : params.get('view') === 'achievements' ? 'achievements' : 'overview');
+    const cyber = path === '/licoes/ciberseguranca';
+    setLessonId(cyber ? securityLessonId : path === '/licoes/variaveis' && isJavascriptLesson(requested) ? requested : 'js-6');
+    setLessonOpen(cyber || path === '/licoes/variaveis');
+    setSection(['/trilhas', '/licoes/variaveis', '/licoes/ciberseguranca'].includes(path) ? 'courses' : params.get('view') === 'achievements' ? 'achievements' : 'overview');
     const id = params.get('trilha');
     if (trails.some(trail => trail.id === id)) setSelectedTrail(id as TrailId);
+    else if (cyber) setSelectedTrail('security');
     else if (path === '/trilhas') setSelectedTrail('javascript');
-    if (path === '/trilhas' && id === 'security') setSecurityExplored(true);
+    if (cyber || path === '/trilhas' && id === 'security') setSecurityExplored(true);
     setMobileOpen(false);
   }, []);
   useEffect(() => {
@@ -133,19 +138,22 @@ export default function KodeoApp({ initialSection = 'overview', initialLessonOpe
     try { localStorage.setItem('kodeo-theme', next); } catch { /* Storage is optional for this preview. */ }
   }
   function openLesson(id: string, keepReturnUrl = false) {
-    const index = javascript.steps.findIndex(step => step.id === id);
-    if (!isJavascriptLesson(id) || stepStatus(javascript, index, progress) === 'locked') return;
+    const isCyber = id === securityLessonId;
+    const trail = isCyber ? security : javascript;
+    const index = trail.steps.findIndex(step => step.id === id);
+    if (!isCourseLesson(id) || stepStatus(trail, index, progress) === 'locked') return;
+    if (isCyber) setSecurityExplored(true);
     if (!keepReturnUrl) setLessonReturnUrl(window.location.pathname + window.location.search);
     setSessions(current => {
       const state = current[id];
       return state?.phase === 'summary'
-        ? { ...current, [id]: lessonReducer(state, { type: 'review' }, lessonForProfile(id, firstName)) }
+        ? { ...current, [id]: lessonReducer(state, { type: 'review' }, courseLesson(id, firstName)) }
         : current;
     });
     setLessonId(id);
     setLessonOpen(true);
     setMobileOpen(false);
-    window.history.pushState(null, '', appUrl('/licoes/variaveis', id === 'js-6' ? '' : `?etapa=${id}`));
+    window.history.pushState(null, '', isCyber ? appUrl('/licoes/ciberseguranca') : appUrl('/licoes/variaveis', id === 'js-6' ? '' : `?etapa=${id}`));
   }
   function closeLesson() {
     focusHeading.current = true;
