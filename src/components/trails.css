@@ -123,3 +123,35 @@
   .map-next-banner > div { min-width: 0; }
   .map-next-banner .MuiButton-root { margin-left: 0; min-height: 44px; }
 }
+
+
+/* Navegação por toque e leitura em tablets/celulares. */
+.trail-filter button, .library-card, .map-toolbar .MuiToggleButton-root,
+.list .path-step .text-action, .back-to-current, .map-next-banner .MuiButton-root {
+  min-height: 44px;
+}
+.trail-workspace, .trail-map-panel, .learning-board, .map-next-banner,
+.trail-map-heading, .step-caption { min-width: 0; }
+.trail-map-heading h2, .map-next-banner p, .step-caption h3 { overflow-wrap: anywhere; }
+
+@media (min-width: 651px) and (max-width: 1050px) {
+  .trail-library { position: static; }
+  .library-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .map-toolbar { flex-wrap: wrap; }
+}
+@media (max-width: 650px) {
+  .trail-filter { gap: 6px; }
+  .trail-filter button { padding: 9px 11px; }
+  .library-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px; }
+  .map-next-banner .MuiButton-root { margin: 6px 0 0; width: 100%; }
+  .step-detail-meta { gap: 9px; }
+  .map-toolbar .MuiToggleButton-root { min-width: 44px; }
+}
+@media (max-width: 360px) {
+  .library-cards { grid-template-columns: 1fr; }
+  .journey-summary > div { flex-wrap: wrap; }
+  .map-toolbar { margin-inline: 12px; }
+  .trail-map-heading { padding-inline: 14px; }
+  .map-module-guide { padding-inline: 14px; }
+  .list .path-step { padding: 13px 10px; }
+}
