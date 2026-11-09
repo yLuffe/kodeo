@@ -23,9 +23,9 @@ for (const viewport of viewports) {
     await expect.poll(() => dialog.locator('.MuiDialog-paper').evaluate(el => el.scrollWidth <= el.clientWidth)).toBe(true);
 
     await dialog.getByRole('button', { name: 'Ajuda da lição' }).click();
-    await expect(dialog.getByText(/O progresso fica salvo no perfil deste navegador/)).toBeVisible();
-    await expect(dialog.getByText(/Os desafios de código aceitam/)).toHaveCount(0);
-    await dialog.getByRole('button', { name: 'Entendi' }).click();
+    await expect(page.getByText(/O progresso fica salvo no perfil deste navegador/)).toBeVisible();
+    await expect(page.getByText(/Os desafios de código aceitam/)).toHaveCount(0);
+    await page.getByRole('button', { name: 'Entendi' }).click();
 
     await dialog.getByRole('radio', { name: /Integridade/ }).check();
     await dialog.getByRole('button', { name: 'Verificar resposta' }).click();
