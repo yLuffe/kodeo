@@ -11,7 +11,7 @@
 .lesson-breadcrumb { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-size: 11px; color: var(--muted); margin-bottom: 30px; }
 .lesson-breadcrumb svg:first-child { color: var(--blue); }
 .lesson-eyebrow { display: block; color: var(--blue); font-size: 10px; font-weight: 700; letter-spacing: 1.5px; margin-bottom: 12px; }
-.lesson-intro { display: grid; grid-template-columns: 1.05fr 1fr; gap: 38px; align-items: center; padding-top: 22px; }
+.lesson-intro { display: grid; grid-template-columns: minmax(0, 1fr); gap: 24px; align-items: center; padding-top: 22px; }
 .intro-copy h1 { font-size: clamp(30px, 3.4vw, 45px); font-weight: 650; line-height: 1.3; letter-spacing: -1.6px; }
 .intro-copy h1 span { color: var(--blue); }
 .intro-copy > p { font-size: 15px; color: var(--muted); line-height: 1.9; max-width: 430px; margin: 20px 0; }
@@ -52,7 +52,7 @@
 .lesson-progress li.is-current { color: var(--blue); font-weight: 650; }
 .lesson-progress li.is-current > span { border-color: var(--blue); background: var(--accent-soft); }
 .lesson-progress li.is-done > span { background: var(--green-soft); border-color: var(--green); color: var(--green); }
-.practice-grid { display: grid; grid-template-columns: minmax(0,1fr) 258px; gap: 24px; align-items: start; }
+.practice-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 18px; align-items: start; }
 .exercise-form { min-width: 0; }
 .question-panel { padding: 28px 31px; border: 1px solid var(--border); border-radius: 12px; background: var(--surface); margin-bottom: 18px; }
 .question-panel-kicker { display: flex; align-items: center; justify-content: space-between; gap: 10px; color: var(--blue); font-size: 10px; font-weight: 650; letter-spacing: .8px; }
@@ -164,9 +164,9 @@
 @keyframes feedback-arrive { from { opacity: 0; transform: translateY(7px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes success-pop { 0% { transform: scale(.88); } 65% { transform: scale(1.06); } 100% { transform: scale(1); } }
 @keyframes celebration-dot { 0% { opacity: 0; transform: translateY(7px) rotate(0); } 30% { opacity: .8; } 100% { opacity: 0; transform: translateY(-18px) rotate(70deg); } }
-@media(max-width: 1000px) { .lesson-brand > span:last-child { display: none; } .practice-grid { grid-template-columns: minmax(0,1fr) 220px; gap: 18px; } .companion-card { padding: 20px; } .question-panel, .response-panel { padding: 24px; } .answer-actions { flex-wrap: wrap; } .answer-actions > div { margin-left: auto; } }
-@media(max-width: 800px) { .practice-grid { grid-template-columns: 1fr; } .lesson-companion { position: static; display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-start; } .companion-card { flex: 1; min-width: 220px; margin: 0; } .companion-mini { width: 100%; } .lesson-intro { gap: 24px; } .intro-code-card pre { padding: 20px; font-size: 13px; } .intro-copy h1 { font-size: 31px; } .concepts-grid { gap: 12px; } .concepts-grid article { padding: 18px; } .lesson-body { padding-inline: 25px; } }
-@media(max-width: 600px) { .lesson-topbar { padding: 12px 16px; min-height: 64px; gap: 9px; } .lesson-brand { display: none; } .lesson-exit.MuiButton-root { font-size: 11px; } .lesson-top-actions { gap: 2px; } .lesson-body { padding: 23px 16px; } .lesson-breadcrumb { font-size: 10px; gap: 6px; margin-bottom: 23px; } .lesson-intro { grid-template-columns: 1fr; padding-top: 6px; } .intro-copy h1 { font-size: 34px; } .intro-copy > p { font-size: 14px; } .intro-code-card { margin-top: 4px; } .concepts-grid { grid-template-columns: 1fr; margin-top: 0; } .concepts-grid article { padding: 22px; } .practice-heading { align-items: flex-start; flex-direction: column; gap: 12px; } .practice-heading h1 { font-size: 23px; } .lesson-reward { font-size: 11px; } .lesson-progress ol { gap: 5px; } .lesson-progress li { font-size: 9px; gap: 4px; } .question-panel, .response-panel { padding: 21px 18px; } .question-panel-kicker { font-size: 9px; letter-spacing: .4px; } .question-panel h2 { font-size: 24px; } .question-panel p { font-size: 13px; } .lesson-option { padding: 15px 9px; gap: 7px; min-height: 76px; } .option-label { font-size: 17px; } .option-letter { width: 24px; height: 24px; font-size: 11px; } .lesson-feedback { padding: 16px 12px; gap: 9px; } .lesson-feedback h3 { font-size: 14px; } .lesson-feedback li { flex-wrap: wrap; } .lesson-feedback li strong { margin-left: 22px; } .answer-actions { gap: 12px; align-items: stretch; } .answer-actions > .MuiButton-root { align-self: flex-start; } .answer-actions > div { width: 100%; display: flex; margin-left: 0; } .answer-actions > div > .MuiButton-contained { flex: 1; padding: 12px 10px; } .editor-writing textarea { font-size: 13px; padding-inline: 10px; } .editor-line-numbers { width: 30px; padding-inline: 8px; font-size: 12px; } .editor-bottom { flex-wrap: wrap; gap: 3px; } .editor-bar { font-size: 10px; padding-inline: 12px; } .editor-bar > span:last-child { font-size: 9px; } .practice-footer { flex-wrap: wrap; } .lesson-summary-stats { gap: 8px; } .lesson-summary-stats > div { padding: 20px 8px; } .lesson-summary-stats strong { font-size: 20px; } .lesson-summary-stats span { font-size: 10px; } .summary-actions { flex-direction: column; } .summary-actions .MuiButton-contained { width: 100%; } .summary-unlock { padding: 20px 16px; } }
+@media(max-width: 1000px) { .lesson-brand > span:last-child { display: none; } .companion-card { padding: 20px; } .question-panel, .response-panel { padding: 24px; } .answer-actions { flex-wrap: wrap; } .answer-actions > div { margin-left: auto; } }
+@media(max-width: 800px) { .lesson-companion { position: static; display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-start; } .companion-card { flex: 1; min-width: 220px; margin: 0; } .companion-mini { width: 100%; } .lesson-intro { gap: 24px; } .intro-code-card pre { padding: 20px; font-size: 13px; } .intro-copy h1 { font-size: 31px; } .concepts-grid { gap: 12px; } .concepts-grid article { padding: 18px; } .lesson-body { padding-inline: 25px; } }
+@media(max-width: 600px) { .lesson-topbar { padding: 12px 16px; min-height: 64px; gap: 9px; } .lesson-brand { display: none; } .lesson-exit.MuiButton-root { font-size: 11px; } .lesson-top-actions { gap: 2px; } .lesson-body { padding: 23px 16px; } .lesson-breadcrumb { font-size: 10px; gap: 6px; margin-bottom: 23px; } .lesson-intro { padding-top: 6px; } .intro-copy h1 { font-size: 34px; } .intro-copy > p { font-size: 14px; } .intro-code-card { margin-top: 4px; } .concepts-grid { grid-template-columns: 1fr; margin-top: 0; } .concepts-grid article { padding: 22px; } .practice-heading { align-items: flex-start; flex-direction: column; gap: 12px; } .practice-heading h1 { font-size: 23px; } .lesson-reward { font-size: 11px; } .lesson-progress ol { gap: 5px; } .lesson-progress li { font-size: 9px; gap: 4px; } .question-panel, .response-panel { padding: 21px 18px; } .question-panel-kicker { font-size: 9px; letter-spacing: .4px; } .question-panel h2 { font-size: 24px; } .question-panel p { font-size: 13px; } .lesson-option { padding: 15px 9px; gap: 7px; min-height: 76px; } .option-label { font-size: 17px; } .option-letter { width: 24px; height: 24px; font-size: 11px; } .lesson-feedback { padding: 16px 12px; gap: 9px; } .lesson-feedback h3 { font-size: 14px; } .lesson-feedback li { flex-wrap: wrap; } .lesson-feedback li strong { margin-left: 22px; } .answer-actions { gap: 12px; align-items: stretch; } .answer-actions > .MuiButton-root { align-self: flex-start; } .answer-actions > div { width: 100%; display: flex; margin-left: 0; } .answer-actions > div > .MuiButton-contained { flex: 1; padding: 12px 10px; } .editor-writing textarea { font-size: 13px; padding-inline: 10px; } .editor-line-numbers { width: 30px; padding-inline: 8px; font-size: 12px; } .editor-bottom { flex-wrap: wrap; gap: 3px; } .editor-bar { font-size: 10px; padding-inline: 12px; } .editor-bar > span:last-child { font-size: 9px; } .practice-footer { flex-wrap: wrap; } .lesson-summary-stats { gap: 8px; } .lesson-summary-stats > div { padding: 20px 8px; } .lesson-summary-stats strong { font-size: 20px; } .lesson-summary-stats span { font-size: 10px; } .summary-actions { flex-direction: column; } .summary-actions .MuiButton-contained { width: 100%; } .summary-unlock { padding: 20px 16px; } }
 @media(prefers-reduced-motion: reduce) { .lesson-feedback, .summary-celebration, .summary-celebration > span, .lesson-feedback.success .feedback-icon { animation: none; } }
 
 .editor-writing { height: 300px; }
@@ -183,17 +183,43 @@
 .intro-code-card, .exercise-form, .lesson-feedback > div { min-width: 0; }
 .option-label, .lesson-feedback { overflow-wrap: anywhere; }
 
-@media (max-width: 800px) {
-  .practice-grid { grid-template-columns: minmax(0, 1fr); }
-}
-
 @media (max-width: 600px) {
   .lesson-topbar { position: static; }
   .lesson-dialog .MuiDialog-paper { scroll-padding-block-start: 12px; }
-  .lesson-intro { grid-template-columns: minmax(0, 1fr); }
   .lesson-topbar .MuiButtonBase-root, .answer-actions .MuiButton-root,
   .practice-footer button, .editor-bottom .MuiButton-root { min-height: 44px; }
   .lesson-topbar .MuiIconButton-root { min-width: 44px; }
   .lesson-progress ol { flex-wrap: wrap; }
   .text-answer-field, .editor-writing textarea { font-size: 16px; }
+}
+
+.lesson-xp {
+  margin: 0 0 20px;
+  padding: 12px 16px;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  background: var(--surface);
+}
+.lesson-xp > div:first-child { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; margin-bottom: 9px; }
+.lesson-xp .MuiLinearProgress-root { height: 7px; border-radius: 5px; }
+.lesson-xp .MuiLinearProgress-bar { transition-duration: 550ms; }
+.xp-gain { display: inline-flex; align-items: center; gap: 5px; color: var(--green); font-weight: 700; }
+@media (prefers-reduced-motion: no-preference) {
+  .xp-gain { animation: xp-arrives 420ms ease-out both; }
+}
+@keyframes xp-arrives {
+  from { opacity: 0; transform: translateY(7px) scale(.92); }
+  to { opacity: 1; transform: none; }
+}
+
+
+@media (min-width: 601px) {
+  .lesson-intro { grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); }
+}
+@media (min-width: 801px) {
+  .practice-grid { grid-template-columns: minmax(0, 1fr) 220px; }
+}
+@media (min-width: 1001px) {
+  .lesson-intro { gap: 38px; }
+  .practice-grid { grid-template-columns: minmax(0, 1fr) 258px; gap: 24px; }
 }

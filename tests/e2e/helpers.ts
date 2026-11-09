@@ -6,7 +6,7 @@ export async function navigate(page: Page, label: string) {
   await page.getByRole('button', { name: label, exact: label !== 'Minhas trilhas' }).click();
 }
 export async function begin(page: Page) {
-  await page.getByRole('button', { name: /Continuar aprendendo|Revisar lição/ }).click();
+  await page.getByRole('button', { name: /Continuar aprendendo|Continuar de onde parei|Revisar lição/ }).click();
   await page.getByRole('button', { name: /Vamos praticar|Começar revisão/ }).click();
 }
 export async function finishQuestions(page: Page) {

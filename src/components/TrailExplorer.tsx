@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import type { CSSProperties } from 'react';
-import { Alert, Button, Chip, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, LinearProgress, ToggleButton, ToggleButtonGroup } from '@mui/material';
+import { Alert, Button, Chip, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, LinearProgress, ToggleButton, ToggleButtonGroup, useMediaQuery } from '@mui/material';
 import { ArrowLeft, ArrowRight, BookOpen, Check, CheckCircle2, Clock3, Code2, Compass, Flag, GraduationCap, LayoutList, LockKeyhole, Map, Play, ShieldCheck, Target, Terminal, Trophy, X, Zap } from 'lucide-react';
 import { accessReasons, completedCount, getLevel, statusLabels, stepReasons, stepStatus, trails, trailStatus } from '@/lib/trails';
 import type { LearnerProgress, StepStatus, Trail, TrailId } from '@/lib/trails';
@@ -28,7 +28,9 @@ function pathFor(count: number, mobile = false) {
 
 export function TrailExplorer({ progress, selectedTrail, onSelectTrail, onOpenLesson }: { progress: LearnerProgress; selectedTrail: TrailId; onSelectTrail: (id: TrailId) => void; onOpenLesson: (id: string) => void }) {
   const [filter, setFilter] = useState<Filter>('all');
-  const [view, setView] = useState<'map' | 'list'>('map');
+  const compact = useMediaQuery('(max-width:650px)', { defaultMatches: true });
+  const [preferredView, setView] = useState<'map' | 'list' | null>(null);
+  const view = preferredView ?? (compact ? 'list' : 'map');
   const [selectedStep, setSelectedStep] = useState<number | null>(null);
   const nextRef = useRef<HTMLButtonElement>(null);
   const xp = progress.xp;

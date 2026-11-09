@@ -26,7 +26,7 @@ test('fluxo completo: erro, retomada, conclusão, mapa e revisão sem XP duplica
   await expect(dialog.getByRole('heading', { name: 'Qual declaração permite reatribuir o valor de uma variável?' })).toBeVisible();
   await page.goForward();
   await expect(page.getByRole('heading', { name: /Bom te ver/ })).toBeVisible();
-  await page.getByRole('button', { name: 'Continuar aprendendo' }).click();
+  await page.getByRole('button', { name: 'Continuar de onde parei' }).click();
   await expect(wrong).toBeChecked();
   await dialog.getByRole('button', { name: 'Tentar novamente', exact: true }).click();
   await finishQuestions(page);
