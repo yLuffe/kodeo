@@ -80,6 +80,21 @@ pnpm build      # Gerar a versão de produção
 pnpm start      # Executar a versão compilada
 ```
 
+### GitHub Pages
+
+Em **Settings → Pages → Build and deployment**, selecione **GitHub Actions** como fonte.
+O workflow **Publicar Kodeo no GitHub Pages** roda a cada envio à `main` e também pode ser
+iniciado manualmente pela aba **Actions**. A URL publicada aparece no resultado do deploy.
+
+O workflow gera `out/index.html` e um índice para cada rota. O prefixo do repositório
+é aplicado aos arquivos estáticos e à navegação. Para testar a exportação localmente:
+
+```bash
+KODEO_STATIC_EXPORT=1 KODEO_BASE_PATH=/kodeo pnpm build
+```
+
+Essa publicação serve a versão estática da Fase 1, com dados simulados.
+
 ### Regressão de navegação no navegador
 
 ```bash

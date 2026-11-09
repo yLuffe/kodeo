@@ -177,3 +177,23 @@
 .lesson-feedback .criterion-failed > svg { color: var(--error); }
 
 .practice-footer button:disabled { color: var(--muted); opacity: .5; cursor: default; }
+
+.lesson-dialog .MuiDialog-paper { scroll-padding-block-start: 96px; }
+.lesson-option:has(.Mui-focusVisible) { outline: 2px solid var(--blue); outline-offset: 2px; }
+.intro-code-card, .exercise-form, .lesson-feedback > div { min-width: 0; }
+.option-label, .lesson-feedback { overflow-wrap: anywhere; }
+
+@media (max-width: 800px) {
+  .practice-grid { grid-template-columns: minmax(0, 1fr); }
+}
+
+@media (max-width: 600px) {
+  .lesson-topbar { position: static; }
+  .lesson-dialog .MuiDialog-paper { scroll-padding-block-start: 12px; }
+  .lesson-intro { grid-template-columns: minmax(0, 1fr); }
+  .lesson-topbar .MuiButtonBase-root, .answer-actions .MuiButton-root,
+  .practice-footer button, .editor-bottom .MuiButton-root { min-height: 44px; }
+  .lesson-topbar .MuiIconButton-root { min-width: 44px; }
+  .lesson-progress ol { flex-wrap: wrap; }
+  .text-answer-field, .editor-writing textarea { font-size: 16px; }
+}

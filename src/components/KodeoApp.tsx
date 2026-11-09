@@ -13,6 +13,13 @@ import { learnerProgress, levelProgress, totalCompleted, trailProgress } from '@
 import type { TrailId } from '@/lib/trails';
 
 type Section = 'overview' | 'courses' | 'achievements';
+const basePath = process.env.NEXT_PUBLIC_KODEO_BASE_PATH ?? '';
+
+function appUrl(path: string, query = '') {
+  const suffix = process.env.NEXT_PUBLIC_KODEO_STATIC_EXPORT === '1' && path !== '/' ? '/' : '';
+  return basePath + path + suffix + query;
+}
+
 export default function KodeoApp({ initialSection = 'overview', initialLessonOpen = false }: { initialSection?: Section; initialLessonOpen?: boolean }) {
   const [mode, setMode] = useState<'light' | 'dark'>('light');
   const [section, setSection] = useState<Section>(initialSection);
@@ -23,7 +30,7 @@ export default function KodeoApp({ initialSection = 'overview', initialLessonOpe
   const headingRef = useRef<HTMLHeadingElement>(null);
   const focusHeading = useRef(false);
   const [lessonOpen, setLessonOpen] = useState(initialLessonOpen);
-  const [lessonReturnUrl, setLessonReturnUrl] = useState('/trilhas?trilha=javascript');
+  const [lessonReturnUrl, setLessonReturnUrl] = useState(appUrl('/trilhas', '?trilha=javascript'));
   const [info, setInfo] = useState<string | null>(null);
   const [lessonState, lessonDispatch] = useReducer(lessonReducer, undefined, initialLessonState);
   const lessonDone = lessonState.completed;
@@ -39,7 +46,7 @@ export default function KodeoApp({ initialSection = 'overview', initialLessonOpe
   }, []);
   const restoreLocation = useCallback(() => {
     const params = new URLSearchParams(window.location.search);
-    const path = window.location.pathname;
+    const path = window.location.pathname.slice(basePath.length).replace(/\/$/, '') || '/';
     setLessonOpen(path === '/licoes/variaveis');
     setSection(['/trilhas', '/licoes/variaveis'].includes(path) ? 'courses' : params.get('view') === 'achievements' ? 'achievements' : 'overview');
     const id = params.get('trilha');
@@ -69,7 +76,7 @@ export default function KodeoApp({ initialSection = 'overview', initialLessonOpe
     setLessonReturnUrl(window.location.pathname + window.location.search);
     if (lessonState.phase === 'summary') lessonDispatch({ type: 'review' });
     setLessonOpen(true); setMobileOpen(false);
-    window.history.pushState(null, '', '/licoes/variaveis');
+    window.history.pushState(null, '', appUrl('/licoes/variaveis'));
   }
   function closeLesson() {
     focusHeading.current = true;
@@ -79,12 +86,12 @@ export default function KodeoApp({ initialSection = 'overview', initialLessonOpe
   function navigate(next: Section, trailId: TrailId = selectedTrail) {
     focusHeading.current = true;
     setSelectedTrail(trailId);
-    window.history.pushState(null, '', next === 'courses' ? `/trilhas?trilha=${trailId}` : next === 'achievements' ? '/?view=achievements' : '/');
+    window.history.pushState(null, '', next === 'courses' ? appUrl('/trilhas', `?trilha=${trailId}`) : appUrl('/', next === 'achievements' ? '?view=achievements' : ''));
     restoreLocation();
     window.scrollTo({ top: 0, behavior: 'instant' });
   }
   function selectTrail(id: TrailId) {
-    window.history.replaceState(null, '', `/trilhas?trilha=${id}`);
+    window.history.replaceState(null, '', appUrl('/trilhas', `?trilha=${id}`));
     restoreLocation();
   }
   const icons = { code: Code2, shield: ShieldCheck, terminal: Terminal };
@@ -97,15 +104,15 @@ export default function KodeoApp({ initialSection = 'overview', initialLessonOpe
     </aside>;
   return <ThemeProvider theme={theme}><CssBaseline /><div className="app" data-theme={mode}>
     <a className="skip-link" href="#main-content">Ir para o conteúdo</a>
-    {isMobile ? <Drawer className="mobile-drawer" open={mobileOpen} onClose={() => setMobileOpen(false)} slotProps={{ paper: { 'aria-label': 'Menu de navegação' } }}>{sidebar}</Drawer> : sidebar}
-    <div className="main-shell"><header className="topbar"><div className="breadcrumb"><IconButton className="mobile-menu" aria-label="Abrir menu" onClick={() => setMobileOpen(true)}><Menu size={21}/></IconButton><span>Meu aprendizado</span><ChevronRight size={14}/><strong>{section === 'overview' ? 'Visão geral' : section === 'courses' ? 'Minhas trilhas' : 'Conquistas'}</strong></div><div className="topbar-actions"><span className="demo-label">Prévia do dashboard</span><Tooltip title={mode === 'light' ? 'Ativar modo escuro' : 'Ativar modo claro'}><IconButton onClick={toggleTheme} aria-label={mode === 'light' ? 'Ativar modo escuro' : 'Ativar modo claro'}>{mode === 'light' ? <Moon size={19}/> : <Sun size={19}/>}</IconButton></Tooltip><span className="avatar small">N</span></div></header>
+    {isMobile ? <Drawer className="mobile-drawer" open={mobileOpen} onClose={() => setMobileOpen(false)} slotProps={{ paper: { id: 'mobile-navigation', role: 'dialog', 'aria-modal': true, 'aria-label': 'Menu de navegação' } }}>{sidebar}</Drawer> : sidebar}
+    <div className="main-shell"><header className="topbar"><div className="breadcrumb"><IconButton className="mobile-menu" aria-label="Abrir menu" aria-haspopup="dialog" aria-expanded={mobileOpen} aria-controls={mobileOpen ? "mobile-navigation" : undefined} onClick={() => setMobileOpen(true)}><Menu size={21}/></IconButton><span>Meu aprendizado</span><ChevronRight size={14}/><strong>{section === 'overview' ? 'Visão geral' : section === 'courses' ? 'Minhas trilhas' : 'Conquistas'}</strong></div><div className="topbar-actions"><span className="demo-label">Prévia do dashboard</span><Tooltip title={mode === 'light' ? 'Ativar modo escuro' : 'Ativar modo claro'}><IconButton onClick={toggleTheme} aria-label={mode === 'light' ? 'Ativar modo escuro' : 'Ativar modo claro'}>{mode === 'light' ? <Moon size={19}/> : <Sun size={19}/>}</IconButton></Tooltip><span className="avatar small">N</span></div></header>
     <main id="main-content" tabIndex={-1}><div className="page-heading"><div><div className="eyebrow">APRENDA. PRATIQUE. EVOLUA.</div><h1 ref={headingRef} tabIndex={-1}>{section === 'overview' ? 'Bom te ver por aqui, Nando' : section === 'courses' ? 'Seu mapa de aprendizado' : 'Cada passo merece uma conquista'}{section === 'overview' && <span className="greeting-dot">.</span>}</h1><p>{section === 'overview' ? 'Seu próximo passo começa aqui. Vamos aprender algo novo hoje?' : section === 'courses' ? 'Escolha seu caminho. Cada etapa abre uma nova possibilidade.' : 'Celebre o que você já aprendeu e descubra o que vem a seguir.'}</p></div><div className="streak-tag"><Flame size={18}/><strong>3 dias</strong><span>de sequência</span></div></div>
     <p className="demo-notice">Protótipo com dados simulados. Recarregar reinicia XP e progresso; sair da lição mantém seu rascunho nesta sessão.</p>
     {section === 'overview' && <>
       <div className="stats-grid"><div className="stat-card"><span className="stat-icon blue"><GraduationCap size={21}/></span><div><small>Nível atual</small><strong>{level.level} <span>Aprendiz</span></strong></div></div><div className="stat-card"><span className="stat-icon amber"><Zap size={21}/></span><div><small>Experiência total</small><strong>{xp.toLocaleString('pt-BR')} <span>XP</span></strong></div></div><div className="stat-card"><span className="stat-icon green"><CheckCircle2 size={21}/></span><div><small>Lições concluídas</small><strong>{totalCompleted(progress)} <span>uma de cada vez</span></strong></div></div><div className="stat-card"><span className="stat-icon purple"><Trophy size={21}/></span><div><small>Conquistas</small><strong>{lessonDone ? 4 : 3} <span>desbloqueadas</span></strong></div></div></div>
       <div className="dashboard-grid"><div className="primary-column"><section className="continue-card"><div className="hero-content"><span className="hero-label"><span className="pulse-dot"/> SUA JORNADA CONTINUA</span><h2>Grandes ideias começam<br/>com pequenos códigos.</h2><p>Fundamentos de JavaScript</p><div className="lesson-meta"><span>Módulo 2</span><span className="meta-dot"/><span>Variáveis e tipos de dados</span></div><Button variant="contained" onClick={openLesson} endIcon={<ArrowRight size={17}/>}>{lessonDone ? 'Revisar lição' : 'Continuar aprendendo'}</Button><span className="hero-time"><Clock3 size={13}/> Cerca de 8 minutos</span></div><div className="code-art" aria-hidden="true"><div className="code-window"><div className="window-top"><i/><i/><i/><span>seu-proximo-passo.js</span></div><div className="code-lines"><span className="comment">// todo dia, um pouco melhor</span><span><b>const</b> aprendiz = {'{'}</span><span>&nbsp; curiosidade: <em>true</em>,</span><span>&nbsp; próximoPasso: <i>'aprender'</i></span><span>{'}'};</span><span className="code-gap"/><span><b>evoluir</b>(aprendiz);<span className="cursor"/></span></div></div><span className="floating-code">{'</>'}</span></div><div className="hero-footer"><span>Seu progresso na trilha</span><LinearProgress variant="determinate" value={javascriptProgress.percent} aria-label="Progresso na trilha JavaScript"/><strong>{javascriptProgress.percent}%</strong></div></section>
       <section className="section-block"><div className="section-title"><h2>Seu plano de hoje</h2><span className="muted">{1 + Number(lessonDone) + Number(securityExplored)} de 3 concluídas</span></div><div className="task-list"><div className="task-row completed"><span className="task-check"><Check size={15}/></span><div><strong>Dar o primeiro passo</strong><p>Acesse sua jornada e prepare-se para aprender.</p></div><span className="task-status">Concluído</span></div><div className={`task-row ${lessonDone ? 'completed' : ''}`}><span className={`task-check ${lessonDone ? '' : 'pending'}`}>{lessonDone ? <Check size={15}/> : <Play size={13}/>}</span><div><strong>Uma nova habilidade</strong><p>Conclua a lição de variáveis e tipos de dados.</p></div><button className="task-action" onClick={openLesson}>{lessonDone ? 'Revisar' : 'Praticar'}<ArrowRight size={15}/></button></div><div className={`task-row ${securityExplored ? 'completed' : ''}`}><span className={`task-check ${securityExplored ? '' : 'pending'}`}>{securityExplored ? <Check size={15}/> : <Target size={15}/>}</span><div><strong>Explore um novo caminho</strong><p>Conheça a trilha de introdução à cibersegurança.</p></div><button className="task-action" onClick={() => navigate('courses', 'security')}>Explorar<ArrowRight size={15}/></button></div></div></section></div>
-      <aside className="secondary-column"><section className="panel level-panel"><div className="panel-heading"><h2>Seu próximo nível</h2><Sparkles size={17}/></div><div className="level-symbol"><span><GraduationCap size={31}/></span><b>{level.level}</b></div><h3>Nível {level.level}</h3><p>Cada descoberta te leva mais longe.</p><div className="xp-label"><strong>{xp.toLocaleString('pt-BR')} XP</strong><span>{level.next === null ? 'Nível máximo da prévia' : `${level.next.toLocaleString('pt-BR')} XP`}</span></div><LinearProgress variant="determinate" value={level.percent} aria-label={level.next === null ? 'Nível máximo da prévia' : `Progresso para o nível ${level.level + 1}`}/><div className="next-level">{level.next === null ? 'Você alcançou o último nível desta prévia.' : <>Faltam <strong>{level.remaining.toLocaleString('pt-BR')} XP</strong> para o nível {level.level + 1}</>}</div>{level.next !== null && <div className="level-bottom"><span>Nível {level.level + 1}</span><strong>Próxima descoberta <ArrowUpRight size={14}/></strong></div>}</section><section className="panel weekly-panel"><div className="panel-heading"><h2>Constância é tudo</h2><Flame size={18}/></div><p>Você estudou em <strong>3 dias</strong> nesta semana.</p><div className="week-days">{['S', 'T', 'Q', 'Q', 'S', 'S', 'D'].map((day, index) => <div key={index}><span>{day}</span><i className={index < 3 ? 'day done' : 'day'}>{index < 3 ? <Check size={14}/> : <span/>}</i></div>)}</div><div className="weekly-message"><span/> Continue cultivando esse hábito.</div></section></aside></div>
+      <aside className="secondary-column"><section className="panel level-panel"><div className="panel-heading"><h2>Seu próximo nível</h2><Sparkles size={17}/></div><div className="level-symbol"><span><GraduationCap size={31}/></span><b>{level.level}</b></div><h3>Nível {level.level}</h3><p>Cada descoberta te leva mais longe.</p><div className="xp-label"><strong>{xp.toLocaleString('pt-BR')} XP</strong><span>{level.next === null ? 'Nível máximo da prévia' : `${level.next.toLocaleString('pt-BR')} XP`}</span></div><LinearProgress variant="determinate" value={level.percent} aria-label={level.next === null ? 'Nível máximo da prévia' : `Progresso para o nível ${level.level + 1}`}/><div className="next-level">{level.next === null ? 'Você alcançou o último nível desta prévia.' : <>Faltam <strong>{level.remaining.toLocaleString('pt-BR')} XP</strong> para o nível {level.level + 1}</>}</div>{level.next !== null && <div className="level-bottom"><span>Nível {level.level + 1}</span><strong>Próxima descoberta <ArrowUpRight size={14}/></strong></div>}</section><section className="panel weekly-panel"><div className="panel-heading"><h2>Constância é tudo</h2><Flame size={18}/></div><p>Você estudou em <strong>3 dias</strong> nesta semana.</p><div className="week-days" aria-hidden="true">{['S', 'T', 'Q', 'Q', 'S', 'S', 'D'].map((day, index) => <div key={index}><span>{day}</span><i className={index < 3 ? 'day done' : 'day'}>{index < 3 ? <Check size={14}/> : <span/>}</i></div>)}</div><div className="weekly-message"><span/> Continue cultivando esse hábito.</div></section></aside></div>
     </>}
     {section === 'courses' && <TrailExplorer progress={progress} selectedTrail={selectedTrail} onSelectTrail={selectTrail} onOpenLesson={openLesson}/>}
     {section === 'overview' && <section className="section-block courses-section"><div className="section-title"><div><h2>{section === 'overview' ? 'Suas trilhas de aprendizado' : 'Encontre seu caminho'}</h2><p>Conhecimento que cresce junto com você.</p></div>{section === 'overview' && <button className="text-action" onClick={() => navigate('courses')}>Ver todas as trilhas<ArrowRight size={16}/></button>}</div><div className="courses-grid">{courses.map(course => { const Icon = icons[course.icon]; const courseProgress = trailProgress(trails.find(trail => trail.id === course.id)!, progress); return <article className="course-card" key={course.id}><div className="course-top"><span className={`course-icon ${course.color}`}><Icon size={23}/></span><span className={`course-tag ${course.color}`}>{course.tag}</span></div><span className="course-category">{course.category}</span><h3>{course.title}</h3><p>{course.description}</p><div className="course-progress-label"><span>{courseProgress.completed} de {courseProgress.total} lições</span><strong>{courseProgress.percent}%</strong></div><LinearProgress variant="determinate" value={courseProgress.percent} aria-label={`Progresso em ${course.title}`}/><button className="course-link" onClick={() => navigate('courses', course.id)}>{courseProgress.percent === 100 ? 'Revisar trilha' : courseProgress.percent === 0 ? 'Conhecer trilha' : 'Continuar trilha'}<ArrowUpRight size={17}/></button></article>; })}</div></section>}
@@ -113,6 +120,6 @@ export default function KodeoApp({ initialSection = 'overview', initialLessonOpe
     <footer className="page-footer"><span><Code2 size={15}/> Feito para quem nunca para de aprender.</span><span>Kodeo · um passo de cada vez</span></footer>
     </main></div>
     <LessonWorkspace open={lessonOpen} mode={mode} state={lessonState} dispatch={lessonDispatch} onExit={closeLesson} onToggleTheme={toggleTheme}/>
-    <Dialog open={!!info} onClose={() => setInfo(null)} fullWidth maxWidth="sm"><DialogTitle>Seu aprendizado no Kodeo</DialogTitle><DialogContent><p>{info}</p></DialogContent><DialogActions><Button onClick={() => setInfo(null)}>Entendi</Button></DialogActions></Dialog>
+    <Dialog aria-labelledby="info-title" open={!!info} onClose={() => setInfo(null)} fullWidth maxWidth="sm"><DialogTitle id="info-title">Seu aprendizado no Kodeo</DialogTitle><DialogContent><p>{info}</p></DialogContent><DialogActions><Button onClick={() => setInfo(null)}>Entendi</Button></DialogActions></Dialog>
   </div></ThemeProvider>;
 }
