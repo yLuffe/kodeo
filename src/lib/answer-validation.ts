@@ -33,7 +33,7 @@ export function analyzeCode(source: string, question: CodeQuestion): AnswerResul
     const declarations = body.flatMap(node => (node.declarations ?? []).map(value => ({ ...value, kind: node.kind })));
     const allowed = declarations.length === 2 && declarations.every(node => matchesId(node.id, 'nome') || matchesId(node.id, 'ativo'));
     criteria = [
-      { label: question.criteria[0], passed: allowed && declarations.some(node => node.kind === 'const' && matchesId(node.id, 'nome') && matchesLiteral(node.init, 'Kodeo')) },
+      { label: question.criteria[0], passed: allowed && declarations.some(node => node.kind === 'const' && matchesId(node.id, 'nome') && matchesLiteral(node.init, question.expectedName ?? 'Kodeo')) },
       { label: question.criteria[1], passed: allowed && declarations.some(node => node.kind === 'const' && matchesId(node.id, 'ativo') && matchesLiteral(node.init, true)) },
     ];
   }

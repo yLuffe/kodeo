@@ -37,15 +37,13 @@ A proposta é simples: **a gamificação apoia o aprendizado, e o conteúdo cont
 | **Aparência** | Temas claro e escuro, azul sóbrio e layout responsivo. |
 | **Acessibilidade** | Estados com texto e ícones, foco visível e respeito à redução de movimento. |
 
-> **Estágio atual:** Fase 1 com fluxo completo em dados simulados e sem login. Veja os [critérios e a validação da Fase 1](docs/FASE_1.md). O progresso e o XP reiniciam ao recarregar a página; a preferência de tema fica salva no navegador. As demais lições apresentam resumos, com suas atividades completas previstas para as próximas etapas. XP é acumulado, não gasto para acessar trilhas.
+> **Estágio atual:** protótipo com perfil local e dados simulados. Na primeira visita, informe o primeiro nome. O navegador salva rascunhos, tentativas, XP e conclusões. Veja o [guia de JavaScript](docs/JAVASCRIPT.md).
 
 ### Ambiente de lições
 
-A rota `/licoes/variaveis` oferece uma introdução e cinco exercícios em uma área de estudo ampla. O aluno pode consultar dicas, corrigir respostas, voltar ao exercício anterior e sair para retomar o rascunho nesta sessão. O resumo final apresenta tentativas, recompensas e conquistas; revisões não concedem XP novamente.
+As etapas 1 a 5 têm leitura rápida e uma pergunta de revisão no mapa. As etapas 6 a 11 têm exercícios interativos com dicas e feedback. A etapa 6 também inclui resposta escrita e editor de código. O código submetido é analisado por critérios com Acorn, sem ser executado.
 
-Os exercícios de código usam **Acorn** para analisar sintaxe e critérios específicos, aceitando as variações descritas no enunciado. Nenhum código enviado pelo aluno é executado. Esta etapa não é um avaliador genérico de programas. Respostas curtas seguem os valores aceitos pelo exercício.
-
-Tentativas e eventos de XP ficam no estado demonstrativo da sessão. A validação confiável no servidor e a persistência continuam previstas na integração com Supabase.
+O protótipo usa um perfil por navegador e endereço do site. Limpar os dados do site reinicia a demonstração. As primeiras cinco etapas e o XP inicial continuam preenchidos para a apresentação. Revisar uma etapa concluída não concede XP novamente.
 
 ## Tecnologias
 
