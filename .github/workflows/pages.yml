@@ -62,7 +62,14 @@ jobs:
   verify-cyber:
     needs: deploy
     runs-on: ubuntu-latest
-    timeout-minutes: 8
+    timeout-minutes: 12
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ needs.deploy.outputs.page_url }}
     env:
       KODEO_E2E_URL: ${{ needs.deploy.outputs.page_url }}
     steps:
@@ -76,16 +83,45 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - run: pnpm exec playwright install --with-deps chromium
-      - name: Aguardar atualização da rota pública
+      - name: Verificar página inicial e quiz no endereço público
+        id: public-check
+        continue-on-error: true
         run: |
-          url="${KODEO_E2E_URL%/}/licoes/ciberseguranca/"
-          for attempt in {1..15}; do
-            if curl --fail --silent --show-error --location --max-time 10 "$url" -o "$RUNNER_TEMP/cyber.html" && grep -Fq 'Desafios de cibersegurança' "$RUNNER_TEMP/cyber.html"; then
+          set -uo pipefail
+          root="${KODEO_E2E_URL%/}/"
+          cyber="${root}licoes/ciberseguranca/"
+          for attempt in {1..8}; do
+            root_status=$(curl -sSL --max-time 10 -o "$RUNNER_TEMP/root.html" -w '%{http_code}' "$root" || true)
+            cyber_status=$(curl -sSL --max-time 10 -o "$RUNNER_TEMP/cyber.html" -w '%{http_code}' "$cyber" || true)
+            echo "Tentativa $attempt: início HTTP ${root_status:-000}, cyber HTTP ${cyber_status:-000}"
+            if [ "$root_status" = '200' ] && [ "$cyber_status" = '200' ] && grep -Fq 'Desafios de cibersegurança' "$RUNNER_TEMP/cyber.html"; then
               exit 0
             fi
             sleep 8
           done
-          echo "::error::A rota pública de Cyber ainda não disponibiliza a lição."
+          echo "::warning::A publicação foi aceita pelo GitHub, mas as URLs públicas não responderam corretamente."
+          exit 1
+      - name: Reimplantar artefato quando o Pages devolver erro
+        if: steps.public-check.outcome == 'failure'
+        uses: actions/deploy-pages@v4
+        id: redeploy
+        with:
+          artifact_name: github-pages
+      - name: Confirmar URLs públicas após a publicação
+        run: |
+          set -uo pipefail
+          root="${KODEO_E2E_URL%/}/"
+          cyber="${root}licoes/ciberseguranca/"
+          for attempt in {1..12}; do
+            root_status=$(curl -sSL --max-time 10 -o "$RUNNER_TEMP/root.html" -w '%{http_code}' "$root" || true)
+            cyber_status=$(curl -sSL --max-time 10 -o "$RUNNER_TEMP/cyber.html" -w '%{http_code}' "$cyber" || true)
+            echo "Tentativa $attempt: início HTTP ${root_status:-000}, cyber HTTP ${cyber_status:-000}"
+            if [ "$root_status" = '200' ] && [ "$cyber_status" = '200' ] && grep -Fq 'Desafios de cibersegurança' "$RUNNER_TEMP/cyber.html"; then
+              exit 0
+            fi
+            sleep 8
+          done
+          echo "::error::GitHub Pages não entregou a página inicial e/ou a rota Cyber; verificar Settings > Pages (Source: GitHub Actions) e incidentes do GitHub."
           exit 1
       - name: Responder, corrigir e retomar Cyber no site público
         run: pnpm test:e2e tests/e2e/security-quiz.spec.ts
