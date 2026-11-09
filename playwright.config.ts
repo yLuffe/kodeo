@@ -1,5 +1,8 @@
 import { defineConfig } from '@playwright/test';
 
+const publicUrl = process.env.KODEO_E2E_URL;
+const baseURL = publicUrl ? publicUrl.replace(/\/*$/, '/') : 'http://127.0.0.1:3100/';
+
 export default defineConfig({
   testDir: './tests/e2e',
   timeout: 60_000,
@@ -10,20 +13,20 @@ export default defineConfig({
     { name: 'mobile', use: { viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true } },
   ],
   use: {
-    baseURL: 'http://127.0.0.1:3100',
+    baseURL,
     browserName: 'chromium',
     storageState: { cookies: [], origins: [{
-      origin: 'http://127.0.0.1:3100',
+      origin: new URL(baseURL).origin,
       localStorage: [{ name: 'kodeo:profile:v1', value: JSON.stringify({ firstName: 'Kodeo', lessons: {}, securityExplored: false }) }],
     }] },
     launchOptions: {
       executablePath: process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH,
     },
   },
-  webServer: {
+  webServer: publicUrl ? undefined : {
     command: 'pnpm build && pnpm start --hostname 127.0.0.1 --port 3100',
     reuseExistingServer: !process.env.CI,
-    url: 'http://127.0.0.1:3100',
+    url: baseURL,
     timeout: 120_000,
   },
 });
