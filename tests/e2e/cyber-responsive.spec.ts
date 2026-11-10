@@ -16,7 +16,7 @@ for (const viewport of viewports) {
     await expect(dialog.getByRole('heading', { name: 'Desafios de cibersegurança' })).toBeVisible();
     await dialog.getByRole('button', { name: 'Vamos praticar' }).click();
 
-    await expect(dialog.getByText('Exercício 1 de 20')).toBeVisible();
+    await expect(dialog.getByText('Exercício 1 de 25')).toBeVisible();
     await expect(dialog.getByText('Questão atual: 1')).toBeVisible();
     await expect(dialog.locator('.lesson-progress ol')).toHaveCount(0);
     await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
