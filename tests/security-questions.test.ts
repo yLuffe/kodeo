@@ -2,9 +2,9 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { securityQuiz, securityQuestions } from '../src/lib/security-questions';
 
-test('questionário tem 20 questões originais com distribuição planejada', () => {
+test('questionário tem 25 questões originais com distribuição planejada', () => {
   assert.equal(securityQuiz.questions, securityQuestions);
-  assert.equal(securityQuiz.questions.length, 20);
+  assert.equal(securityQuiz.questions.length, 25);
   const totals = Object.fromEntries(
     [...new Set(securityQuestions.map(question => question.topic))].map(
       topic => [topic, securityQuestions.filter(question => question.topic === topic).length],
@@ -13,9 +13,10 @@ test('questionário tem 20 questões originais com distribuição planejada', ()
   assert.deepEqual(totals, {
     'Fundamentos': 5,
     'Avaliação de segurança': 3,
-    'Identidades e acesso': 3,
-    'Segurança de redes': 6,
+    'Identidades e acesso': 5,
+    'Segurança de redes': 8,
     'Monitoramento e resposta': 3,
+    'Arquitetura de segurança': 1,
   });
 });
 
@@ -65,6 +66,6 @@ test('concluir Cyber salva o perfil e soma XP sem avançar a trilha de JavaScrip
   const profile = readProfile(JSON.stringify({ firstName: 'Ana', lessons: { 'sec-quiz': session }, securityExplored: true }))!;
   const progress = learnerProgress(initialLessonState(), [], profile.lessons['sec-quiz']);
   assert.deepEqual(progress.completed, { javascript: 5, security: 1 });
-  assert.equal(progress.xp, 1490);
+  assert.equal(progress.xp, 1540);
   assert.equal(achievementProgress(profile.lessons).find(badge => badge.id === 'cyber')?.current, 1);
 });
