@@ -27,7 +27,7 @@ test('cinco cenários avançados são inéditos, distintos e aparecem após os f
     'Identidades e acesso', 'Identidades e acesso',
     'Segurança de redes', 'Segurança de redes', 'Arquitetura de segurança',
   ]);
-  assert.ok(expert.every(question => question.difficulty === 'Avançado'));
+  assert.ok(expert.every(question => question.difficulty === 'Especialista'));
   assert.ok(expert.every(question => question.context.length > 300));
   assert.ok(expert.every(question => question.explanation.length > 300));
   assert.equal(securityQuestions.reduce((sum, question) => sum + question.xp, 50), 300);
@@ -51,7 +51,7 @@ test('questões têm quatro alternativas distintas, uma resposta válida e expli
     assert.ok(question.explanation.trim().length > 80);
     assert.ok(question.hint.trim().length > 20);
     assert.equal(question.xp, 10);
-    assert.ok(['Básico', 'Intermediário', 'Avançado'].includes(question.difficulty));
+    assert.ok(['Básico', 'Intermediário', 'Avançado', 'Especialista'].includes(question.difficulty));
   }
   assert.equal(securityQuiz.completionXP, 50);
 });
