@@ -3,7 +3,7 @@ import KodeoApp from '@/components/KodeoApp';
 
 export const metadata: Metadata = {
   title: 'Desafios de cibersegurança — Kodeo',
-  description: '20 questões originais em português, com correção imediata, explicações e revisão.',
+  description: '25 questões originais em português, com correção imediata, explicações e revisão.',
 };
 
 export default function CybersecurityLessonPage() {
