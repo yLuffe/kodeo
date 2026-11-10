@@ -20,6 +20,20 @@ test('questionário tem 25 questões originais com distribuição planejada', ()
   });
 });
 
+test('cinco cenários avançados são inéditos, distintos e aparecem após os fundamentos', () => {
+  const expert = securityQuestions.slice(20);
+  assert.deepEqual(expert.map(question => question.id), ['secq-21', 'secq-22', 'secq-23', 'secq-24', 'secq-25']);
+  assert.deepEqual(expert.map(question => question.topic), [
+    'Identidades e acesso', 'Identidades e acesso',
+    'Segurança de redes', 'Segurança de redes', 'Arquitetura de segurança',
+  ]);
+  assert.ok(expert.every(question => question.difficulty === 'Avançado'));
+  assert.ok(expert.every(question => question.context.length > 300));
+  assert.ok(expert.every(question => question.explanation.length > 300));
+  assert.equal(securityQuestions.reduce((sum, question) => sum + question.xp, 50), 300);
+});
+
+
 test('questões têm quatro alternativas distintas, uma resposta válida e explicações', () => {
   const ids = new Set<string>();
   const titles = new Set<string>();
