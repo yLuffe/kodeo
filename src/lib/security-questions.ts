@@ -4,7 +4,7 @@ import { gamification } from './learning';
 export interface SecurityQuestion {
   id: string;
   topic: string;
-  difficulty: 'Básico' | 'Intermediário' | 'Avançado';
+  difficulty: 'Básico' | 'Intermediário' | 'Avançado' | 'Especialista';
   title: string;
   context: string;
   options: readonly [string, string, string, string];
@@ -358,7 +358,7 @@ export const securityQuestions: readonly SecurityQuestion[] = [
   {
     "id": "secq-21",
     "topic": "Identidades e acesso",
-    "difficulty": "Avançado",
+    "difficulty": "Especialista",
     "title": "Duas políticas de Acesso Condicional: qual autenticação efetivamente autoriza a sessão?",
     "context": "No tenant fictício Boreal, uma aplicação financeira é abrangida por duas políticas habilitadas de Acesso Condicional: P1 exige a força de autenticação multifator padrão; P2 exige a força de autenticação multifator resistente a phishing. Ambas usam o controle Conceder, sem exclusões. Um administrador autenticou-se com senha e SMS, possui uma chave FIDO2 registrada e o dispositivo atende às demais condições. Qual comportamento deve ser esperado ao acessar a aplicação?",
     "options": [
@@ -375,7 +375,7 @@ export const securityQuestions: readonly SecurityQuestion[] = [
   {
     "id": "secq-22",
     "topic": "Identidades e acesso",
-    "difficulty": "Avançado",
+    "difficulty": "Especialista",
     "title": "Qual prazo realmente revoga a elegibilidade concedida por um pacote de acesso?",
     "context": "Uma organização fictícia usa Entitlement Management para atribuir, via pacote de acesso, elegibilidade de associação a um grupo gerenciado pelo PIM for Groups. O pacote permanece atribuído por 180 dias, enquanto a política PIM determina que atribuições elegíveis expirem após 40 dias; não há renovação, extensão ou reatribuição. Um auditor verifica o estado no 41º dia. Qual conclusão segue desses parâmetros?",
     "options": [
@@ -392,7 +392,7 @@ export const securityQuestions: readonly SecurityQuestion[] = [
   {
     "id": "secq-23",
     "topic": "Segurança de redes",
-    "difficulty": "Avançado",
+    "difficulty": "Especialista",
     "title": "Como preservar a aplicação de SGACL quando o caminho não transporta a SGT em linha?",
     "context": "Em uma rede fictícia, o Cisco ISE atribui SGT 17 aos notebooks de engenharia via 802.1X e SGT 42 aos servidores de controle. A matriz TrustSec nega TCP/3389 de 17 para 42. Um trecho intermediário de camada 3 não transporta a marcação SGT em linha; o equipamento de enforcement na saída, que suporta SXP e SGACL, está configurado para receber associações IP-SGT e conhece a SGT dos destinos. Qual desenho mantém a decisão de segmentação sem depender de propagação SGT em linha por todo o caminho?",
     "options": [
@@ -409,7 +409,7 @@ export const securityQuestions: readonly SecurityQuestion[] = [
   {
     "id": "secq-24",
     "topic": "Segurança de redes",
-    "difficulty": "Avançado",
+    "difficulty": "Especialista",
     "title": "Qual fluxo ainda alcança a política de acesso no processamento de um Secure Firewall?",
     "context": "Um Cisco Secure Firewall Threat Defense fictício possui inteligência de segurança que bloqueia o endereço A antes da ACP; uma política TLS com regra Do Not Decrypt para o domínio B; e uma ACP que usa regras de aplicação e inspeção IPS. Considere três conexões novas: F1 destina-se a A e coincide com o bloqueio; F2 usa HTTPS para B e não é bloqueada pela inteligência; F3 usa HTTPS para C, também não bloqueada, e coincide com uma regra de descriptografia TLS. Qual afirmação é tecnicamente correta?",
     "options": [
@@ -426,7 +426,7 @@ export const securityQuestions: readonly SecurityQuestion[] = [
   {
     "id": "secq-25",
     "topic": "Arquitetura de segurança",
-    "difficulty": "Avançado",
+    "difficulty": "Especialista",
     "title": "Como coordenar a revogação de acesso à nuvem e a segmentação da rede após perda de conformidade?",
     "context": "Uma estação corporativa fictícia perde conformidade no Intune enquanto mantém uma sessão 802.1X no campus e uma sessão já autenticada em uma aplicação protegida por Entra ID. A empresa usa Cisco ISE para autorização da porta e Acesso Condicional para a aplicação; existe integração operacional de postura que pode atualizar o ISE e solicitar CoA. Exige-se reduzir o acesso lateral na rede e impedir novos acessos ao aplicativo, sem pressupor revogação instantânea de todo token já emitido. Qual estratégia contempla corretamente os dois planos de controle?",
     "options": [
