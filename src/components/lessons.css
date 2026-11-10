@@ -295,3 +295,71 @@
   .lesson-feedback { padding: 13px 10px; }
   .lesson-progress-condensed { font-size: 12px; }
 }
+
+.lesson-summary-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.lesson-summary-stats > .mission-reward {
+  grid-column: 1 / -1;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  padding: clamp(20px, 5vw, 42px) 16px;
+  border: 1px solid #4d66cb;
+  border-radius: 22px;
+  background: radial-gradient(ellipse at 75% 0%, #4658b7, transparent 65%), #102c54;
+  color: #fff;
+}
+.mission-reward > svg { color: #fde097; }
+.mission-reward strong span:not(.sr-only) {
+  color: #fff;
+  font-size: clamp(42px, 10vw, 78px);
+  line-height: 1.05;
+  letter-spacing: -.045em;
+  font-variant-numeric: tabular-nums;
+}
+.mission-reward > span { color: #e0e9ff; font-size: 15px; }
+.mission-reward > .mission-bonus {
+  display: inline-flex;
+  gap: 7px;
+  align-items: center;
+  margin-top: 10px;
+  color: #152d4c;
+  background: #fde097;
+  border-radius: 12px;
+  padding: 6px 10px;
+  font-size: 12px;
+  font-weight: 700;
+}
+.mission-bonus svg { color: inherit; }
+.mission-sparks { position: absolute; inset: 0; z-index: -1; pointer-events: none; }
+.mission-sparks i { position: absolute; width: 10px; height: 10px; border-radius: 3px; background: #a8f4da; opacity: .65; transform: rotate(30deg); }
+.mission-sparks i:nth-child(1) { left: 12%; top: 21%; }
+.mission-sparks i:nth-child(2) { left: 20%; top: 62%; background: #fde097; }
+.mission-sparks i:nth-child(3) { left: 30%; top: 32%; background: #cbd4ff; }
+.mission-sparks i:nth-child(4) { left: 7%; top: 76%; background: #cbd4ff; }
+.mission-sparks i:nth-child(5) { right: 13%; top: 18%; background: #fde097; }
+.mission-sparks i:nth-child(6) { right: 22%; top: 62%; }
+.mission-sparks i:nth-child(7) { right: 30%; top: 28%; background: #cbd4ff; }
+.mission-sparks i:nth-child(8) { right: 7%; top: 76%; }
+@media (prefers-reduced-motion: no-preference) {
+  .mission-reward { animation: mission-in 420ms ease-out both; }
+  .mission-sparks i { animation: mission-spark 850ms ease-out both; }
+  .mission-sparks i:nth-child(even) { animation-delay: 100ms; }
+}
+@keyframes mission-in { from { opacity: .55; transform: translateY(10px) scale(.98); } to { opacity: 1; transform: none; } }
+@keyframes mission-spark {
+  from { transform: translateY(26px) rotate(-55deg) scale(.4); opacity: 0; }
+  58% { opacity: 1; }
+  to { transform: rotate(30deg); opacity: .65; }
+}
+
+@media (max-width: 1024px) {
+  .lesson-workspace { padding-bottom: env(safe-area-inset-bottom); }
+  .lesson-workspace .lesson-topbar { padding-top: max(12px, env(safe-area-inset-top)); }
+  .lesson-body { padding: 20px max(clamp(14px, 4vw, 32px), env(safe-area-inset-right)) 26px max(clamp(14px, 4vw, 32px), env(safe-area-inset-left)); }
+  .practice-grid { grid-template-columns: minmax(0, 1fr); }
+  .lesson-companion { position: static; }
+  .lesson-workspace .question-panel, .lesson-workspace .response-panel { border-radius: 18px; }
+  .lesson-workspace .lesson-option { min-height: 62px; border-radius: 14px; }
+  .lesson-workspace :is(.lesson-exit, .answer-actions .MuiButton-root, .summary-actions .MuiButton-root) { min-height: 48px; }
+  .lesson-workspace .summary-actions { flex-wrap: wrap; }
+}

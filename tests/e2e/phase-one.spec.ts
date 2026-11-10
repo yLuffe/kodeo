@@ -31,6 +31,9 @@ test('fluxo completo: erro, retomada, conclusão, mapa e revisão sem XP duplica
   await dialog.getByRole('button', { name: 'Tentar novamente', exact: true }).click();
   await finishQuestions(page);
   await expect(dialog.locator('.lesson-summary-stats')).toContainText('100 XP');
+  await expect(dialog.locator('.mission-reward strong [aria-hidden="true"]')).toHaveText('+100 XP');
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await expect(dialog.locator('.mission-reward')).toHaveCSS('animation-name', 'none');
   await expect(dialog.locator('.summary-unlock')).toContainText('Conquista desbloqueada');
   await dialog.getByText('Ver minhas tentativas').click();
   await expect(dialog.locator('.attempt-history li')).toHaveCount(6);

@@ -35,6 +35,9 @@ jobs:
           pnpm build
           test -s out/index.html
           test -s out/licoes/ciberseguranca/index.html
+          test -s out/manifest.webmanifest
+          test -s out/sw.js
+          test -s out/kodeo-512.png
           touch out/.nojekyll
         env:
           KODEO_STATIC_EXPORT: '1'
