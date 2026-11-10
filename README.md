@@ -12,7 +12,7 @@ Plataforma gamificada para praticar JavaScript e cibersegurança. O aluno percor
 | **Painel de aprendizado** | Mostra o nível, o XP, as tarefas e o próximo exercício recomendado. A meta semanal registra dias em que o aluno praticou. |
 | **Trilhas** | Etapas com status, requisitos de desbloqueio e filtros. A lista abre por padrão no celular, com opção de alternar para o mapa. |
 | **JavaScript** | Etapas 1 a 5 com leitura, exemplos e revisão. Etapas 6 a 11 com 25 exercícios, entre alternativas, resposta escrita e desafios de código. |
-| **Cibersegurança** | A primeira atividade da trilha tem 20 questões com quatro alternativas, dicas, explicações e retomada após recarregar. |
+| **Cibersegurança** | A primeira atividade da trilha tem 25 questões com quatro alternativas, dicas, explicações e retomada após recarregar. |
 | **Feedback e recompensas** | A resposta recebe correção imediata. A barra mostra o XP conquistado na lição e a primeira conclusão libera a próxima etapa quando os requisitos são cumpridos. |
 | **Conquistas** | Nove metas ligadas a ações como corrigir um erro, resolver desafios de código e concluir a prática de cibersegurança. Revisões não duplicam XP. |
 | **Mobile e acessibilidade** | Layout adaptável, alvos de toque maiores, temas claro e escuro, foco visível, controles com nomes acessíveis e suporte à preferência por movimento reduzido. |
