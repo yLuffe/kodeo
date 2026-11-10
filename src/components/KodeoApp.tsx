@@ -221,13 +221,12 @@ export default function KodeoApp({ initialSection = 'overview', initialLessonOpe
       })}</div>
     </section>}
     <footer className="page-footer"><span><Code2 size={15}/> Feito para quem nunca para de aprender.</span><span>Kodeo · um passo de cada vez</span></footer>
-    </main>
+    </main></div>
     {isMobile && <nav className="compact-nav" aria-label="Atalhos do Kodeo">
       <button aria-current={section === 'overview' ? 'page' : undefined} onClick={() => navigate('overview')}><LayoutDashboard size={22} aria-hidden="true"/><span>Início</span></button>
       <button aria-current={section === 'courses' ? 'page' : undefined} onClick={() => navigate('courses')}><Compass size={22} aria-hidden="true"/><span>Trilhas</span></button>
       <button aria-current={section === 'achievements' ? 'page' : undefined} onClick={() => navigate('achievements')}><Trophy size={22} aria-hidden="true"/><span>Medalhas</span></button>
     </nav>}
-    </div>
     <Dialog open={profileReady && !firstName} aria-labelledby="local-profile-title" fullWidth maxWidth="xs">
       <form onSubmit={event => { event.preventDefault(); const name = firstNameFrom(nameInput); if (name) setFirstName(name); }}>
         <DialogTitle id="local-profile-title">Como podemos chamar você?</DialogTitle>

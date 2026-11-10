@@ -50,7 +50,7 @@ export function InstallKodeo() {
   if (installed) return null;
   return <>
     <Button className="install-kodeo" onClick={install} startIcon={<Download size={17}/>} aria-label="Instalar Kodeo">
-      <span>Instalar<span className="install-kodeo-name"> Kodeo</span></span>
+      <span className="install-kodeo-label">Instalar<span className="install-kodeo-name"> Kodeo</span></span>
     </Button>
     <Dialog open={help} onClose={() => setHelp(false)} aria-labelledby="install-kodeo-title" fullWidth maxWidth="xs">
       <DialogTitle id="install-kodeo-title">Instalar Kodeo</DialogTitle>

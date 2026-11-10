@@ -256,8 +256,8 @@ button.brand { border: 0; background: transparent; padding: 0; text-align: left;
 .install-steps li { margin-block: 10px; }
 
 @media (max-width: 1024px) {
-  .kodeo-shell { --compact-nav-height: 70px; }
-  .kodeo-shell .main-shell { margin-inline: 0; }
+  .kodeo-shell { --compact-nav-height: 70px; isolation: isolate; overflow-x: clip; }
+  .kodeo-shell .main-shell { margin-inline: 0; position: relative; z-index: 0; }
   .kodeo-shell .topbar {
     padding: max(8px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) 8px max(16px, env(safe-area-inset-left));
     min-height: 64px;
@@ -279,7 +279,7 @@ button.brand { border: 0; background: transparent; padding: 0; text-align: left;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 7px;
     position: fixed;
-    z-index: 24;
+    z-index: 1000;
     bottom: 0;
     inset-inline: 0;
     padding: 6px max(14px, env(safe-area-inset-right)) calc(6px + env(safe-area-inset-bottom)) max(14px, env(safe-area-inset-left));
@@ -342,4 +342,15 @@ button.brand { border: 0; background: transparent; padding: 0; text-align: left;
 
 @media (min-width: 761px) and (max-width: 1024px) {
   .kodeo-shell .stats-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+
+
+@media (max-width: 360px) {
+  .kodeo-shell .topbar { padding-inline: max(10px, env(safe-area-inset-left)) max(10px, env(safe-area-inset-right)); }
+  .kodeo-shell .breadcrumb { min-width: 0; gap: 4px; }
+  .kodeo-shell .breadcrumb > .compact-brand { gap: 4px; font-size: 17px; }
+  .compact-brand svg { width: 18px; }
+  .install-kodeo.MuiButton-root { min-width: 44px; padding-inline: 8px; }
+  .install-kodeo .MuiButton-startIcon { margin: 0; }
+  .install-kodeo-label { display: none; }
 }
