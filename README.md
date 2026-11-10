@@ -15,7 +15,8 @@ Plataforma gamificada para praticar JavaScript e cibersegurança. O aluno percor
 | **Cibersegurança** | A primeira atividade da trilha tem 20 questões com quatro alternativas, dicas, explicações e retomada após recarregar. |
 | **Feedback e recompensas** | A resposta recebe correção imediata. A barra mostra o XP conquistado na lição e a primeira conclusão libera a próxima etapa quando os requisitos são cumpridos. |
 | **Conquistas** | Nove metas ligadas a ações como corrigir um erro, resolver desafios de código e concluir a prática de cibersegurança. Revisões não duplicam XP. |
-| **Mobile e acessibilidade** | Layout adaptável, alvos de toque maiores, temas claro e escuro, foco visível, controles com nomes acessíveis e suporte à preferência por movimento reduzido. |
+| **Celular e tablet** | Navegação inferior, etapas agrupadas por módulo, controles de toque amplos e celebração de conclusão com XP animado. A preferência por movimento reduzido é respeitada. |
+| **Instalação como app** | Use **Instalar Kodeo** para adicionar o ícone à tela inicial ou à área de trabalho. No Safari do iPhone e iPad, use **Compartilhar → Adicionar à Tela de Início**. |
 
 O perfil é demonstrativo e vale para o navegador e o endereço usados. Limpar os dados do site reinicia a demonstração. As cinco primeiras etapas de JavaScript e o XP inicial já vêm preenchidos para facilitar a apresentação. O XP de Cyber soma no total geral, enquanto a conclusão avança apenas a trilha de cibersegurança.
 

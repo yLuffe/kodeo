@@ -77,7 +77,7 @@
 .you-are-here { position: absolute; top: -29px; left: 50%; transform: translateX(-50%); padding: 5px 8px; border-radius: 5px; color: var(--accent); background: var(--accent-soft); font-size: 8px; font-weight: 750; letter-spacing: .6px; white-space: nowrap; border: 1px solid var(--border); }
 .step-caption { margin-top: 15px; }
 .step-number { font-size: 8px; font-weight: 650; color: var(--muted); letter-spacing: 1px; }
-.step-caption h3 { margin: 4px auto 5px; font-size: 12px; font-weight: 650; line-height: 1.5; max-width: 180px; }
+.step-caption :is(h3, h4) { margin: 4px auto 5px; font-size: 12px; font-weight: 650; line-height: 1.5; max-width: 180px; }
 .step-state { display: flex; align-items: center; justify-content: center; gap: 4px; font-size: 10px; color: var(--muted); }
 .completed .step-state { color: var(--green); }
 .current .step-state, .available .step-state { color: var(--blue); }
@@ -93,7 +93,7 @@
 .list .path-step + .path-step { border-top: 1px solid var(--border); }
 .list .step-button { width: 42px; height: 42px; border-radius: 13px; margin: 0; flex-shrink: 0; box-shadow: none; }
 .list .step-caption { margin-top: 0; }
-.list .step-caption h3 { max-width: none; margin-left: 0; font-size: 13px; }
+.list .step-caption :is(h3, h4) { max-width: none; margin-left: 0; font-size: 13px; }
 .list .step-state { justify-content: flex-start; }
 .list .you-are-here { position: static; transform: none; order: 3; margin-left: auto; font-size: 8px; }
 .list .text-action { margin-left: auto; }
@@ -112,7 +112,7 @@
 .step-content-preview p { font-size: 13px; line-height: 1.8; color: var(--muted); margin-top: 10px; }
 @media(max-width: 1200px) { .trail-workspace { grid-template-columns: 215px minmax(0, 1fr); gap: 15px; } .journey-summary { align-items: flex-start; } .journey-summary > div { gap: 12px; } .journey-summary p { max-width: 300px; } .trail-map-heading { padding: 23px 20px 17px; } .map-progress, .map-next-banner, .map-completed-banner, .map-access-banner { margin-left: 20px; margin-right: 20px; } .map-toolbar { margin-inline: 20px; flex-wrap: wrap; } .map-finish { flex-wrap: wrap; } }
 @media(max-width: 1050px) { .trail-workspace { grid-template-columns: 1fr; } .trail-library { position: static; } .library-cards { grid-template-columns: repeat(3, 1fr); } .library-help { display: none; } .journey-summary { flex-direction: column; gap: 7px; } .journey-summary p { max-width: none; } .trail-map-panel { margin-top: 6px; } }
-@media(max-width: 650px) { .library-cards { grid-template-columns: repeat(2, 1fr); } .library-card { padding: 12px 10px; gap: 8px; } .library-icon { width: 26px; height: 26px; } .library-icon svg { width: 16px; } .library-card strong { font-size: 11px; } .trail-filter { gap: 5px; } .trail-filter button { padding: 7px 9px; font-size: 11px; gap: 5px; } .trail-map-heading h2 { font-size: 19px; } .map-course-icon { width: 39px; height: 39px; } .map-course-icon svg { width: 22px; } .map-next-banner { flex-wrap: wrap; } .map-next-banner > div { flex: 1; min-width: 170px; } .map-next-banner .MuiButton-root { margin-left: 47px; } .map-toolbar { gap: 15px; } .map-module-guide { padding-inline: 20px; font-size: 10px; } .map .path-step { left: var(--mobile-left); top: var(--mobile-top); width: 56%; transform: translate(-50%, -27px); } .learning-board.map { height: var(--mobile-board-height); } .desktop-line { display: none; } .mobile-line { display: block; } .step-button { width: 54px; height: 54px; border-radius: 18px; } .step-caption { margin-top: 12px; } .step-caption h3 { max-width: 160px; font-size: 12px; } .step-caption small { font-size: 9px; } .step-number { font-size: 8px; } .map-finish > span:last-child { margin-left: 29px; } .map-finish { gap: 6px; } .list .path-step { padding: 17px 15px; gap: 11px; flex-wrap: wrap; } .list .you-are-here { display: none; } .list .text-action { font-size: 11px; } .step-detail-meta { font-size: 11px; } }
+@media(max-width: 650px) { .library-cards { grid-template-columns: repeat(2, 1fr); } .library-card { padding: 12px 10px; gap: 8px; } .library-icon { width: 26px; height: 26px; } .library-icon svg { width: 16px; } .library-card strong { font-size: 11px; } .trail-filter { gap: 5px; } .trail-filter button { padding: 7px 9px; font-size: 11px; gap: 5px; } .trail-map-heading h2 { font-size: 19px; } .map-course-icon { width: 39px; height: 39px; } .map-course-icon svg { width: 22px; } .map-next-banner { flex-wrap: wrap; } .map-next-banner > div { flex: 1; min-width: 170px; } .map-next-banner .MuiButton-root { margin-left: 47px; } .map-toolbar { gap: 15px; } .map-module-guide { padding-inline: 20px; font-size: 10px; } .map .path-step { left: var(--mobile-left); top: var(--mobile-top); width: 56%; transform: translate(-50%, -27px); } .learning-board.map { height: var(--mobile-board-height); } .desktop-line { display: none; } .mobile-line { display: block; } .step-button { width: 54px; height: 54px; border-radius: 18px; } .step-caption { margin-top: 12px; } .step-caption :is(h3, h4) { max-width: 160px; font-size: 12px; } .step-caption small { font-size: 9px; } .step-number { font-size: 8px; } .map-finish > span:last-child { margin-left: 29px; } .map-finish { gap: 6px; } .list .path-step { padding: 17px 15px; gap: 11px; flex-wrap: wrap; } .list .you-are-here { display: none; } .list .text-action { font-size: 11px; } .step-detail-meta { font-size: 11px; } }
 @media(prefers-reduced-motion: reduce) { .library-card, .step-button { transition: none; } }
 .map .step-caption { position: relative; width: fit-content; max-width: 100%; margin: 10px auto 0; padding: 4px 8px; background: var(--surface); border-radius: 7px; }
 
@@ -132,7 +132,7 @@
 }
 .trail-workspace, .trail-map-panel, .learning-board, .map-next-banner,
 .trail-map-heading, .step-caption { min-width: 0; }
-.trail-map-heading h2, .map-next-banner p, .step-caption h3 { overflow-wrap: anywhere; }
+.trail-map-heading h2, .map-next-banner p, .step-caption :is(h3, h4) { overflow-wrap: anywhere; }
 
 @media (min-width: 651px) and (max-width: 1050px) {
   .trail-library { position: static; }
@@ -154,4 +154,39 @@
   .trail-map-heading { padding-inline: 14px; }
   .map-module-guide { padding-inline: 14px; }
   .list .path-step { padding: 13px 10px; }
+}
+
+.learning-board.list { display: grid; gap: 14px; padding: 12px clamp(12px, 3vw, 26px) 20px; }
+.trail-module { min-width: 0; border: 1px solid var(--border); border-radius: 16px; background: var(--surface); }
+.module-heading {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 13px;
+  border-radius: 15px 15px 0 0;
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+.module-heading > div { min-width: 0; }
+.module-heading > div > span { font-size: 12px; }
+.module-heading h3 { font-size: 15px; line-height: 1.3; overflow-wrap: anywhere; }
+.module-symbol { display: grid; place-items: center; width: 38px; height: 38px; border-radius: 12px; background: var(--surface); flex: none; }
+.module-count { margin-inline-start: auto; font-size: 12px; text-align: end; }
+.step-caption :is(h3, h4) { margin: 0; }
+.list .path-step { min-width: 0; padding-inline: 14px; }
+.list .path-step.current { background: var(--green-soft); }
+.list .step-button { width: 48px; height: 48px; }
+.list .step-caption { min-width: 0; flex: 1; }
+.list .step-caption :is(h3, h4) { font-size: 15px; overflow-wrap: anywhere; }
+.list .text-action { min-height: 44px; }
+@media (max-width: 1024px) {
+  .trail-filter { flex-wrap: wrap; }
+  .trail-filter button, .map-toolbar .MuiToggleButton-root { min-height: 44px; }
+  .library-card { border-radius: 14px; }
+  .library-card strong { font-size: 14px; }
+  .trail-map-heading h2 { font-size: clamp(20px, 4vw, 30px); }
+}
+@media (max-width: 420px) {
+  .list .text-action { font-size: 0; min-width: 44px; justify-content: center; }
+  .list .text-action svg { width: 19px; height: 19px; }
 }

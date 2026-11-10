@@ -242,3 +242,104 @@ button.brand { border: 0; background: transparent; padding: 0; text-align: left;
   .dashboard-grid { grid-template-columns: minmax(0, 1fr) 280px; gap: 23px; }
   .achievements-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 }
+
+/* App navigation and touch layout for phones and tablets. */
+.compact-brand, .compact-nav { display: none; }
+.install-kodeo.MuiButton-root {
+  color: var(--blue);
+  background: var(--accent-soft);
+  border-radius: 12px;
+  min-height: 44px;
+  white-space: nowrap;
+}
+.install-steps { padding-inline-start: 20px; }
+.install-steps li { margin-block: 10px; }
+
+@media (max-width: 1024px) {
+  .kodeo-shell { --compact-nav-height: 70px; }
+  .kodeo-shell .main-shell { margin-inline: 0; }
+  .kodeo-shell .topbar {
+    padding: max(8px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) 8px max(16px, env(safe-area-inset-left));
+    min-height: 64px;
+    height: auto;
+    gap: 8px;
+    background: var(--surface);
+  }
+  .kodeo-shell .topbar-actions { gap: 5px; }
+  .kodeo-shell .topbar .MuiIconButton-root { min-width: 44px; min-height: 44px; }
+  .kodeo-shell .mobile-menu.MuiIconButton-root { display: inline-flex; }
+  .kodeo-shell .breadcrumb > :is(span, svg, strong) { display: none; }
+  .kodeo-shell .breadcrumb > .compact-brand { display: inline-flex; align-items: center; gap: 6px; font-size: 19px; font-weight: 800; color: var(--accent); }
+  .kodeo-shell .demo-label { display: none; }
+  .kodeo-shell main {
+    padding: 22px max(clamp(14px, 4vw, 32px), env(safe-area-inset-right)) calc(26px + var(--compact-nav-height) + env(safe-area-inset-bottom)) max(clamp(14px, 4vw, 32px), env(safe-area-inset-left));
+  }
+  .compact-nav {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 7px;
+    position: fixed;
+    z-index: 24;
+    bottom: 0;
+    inset-inline: 0;
+    padding: 6px max(14px, env(safe-area-inset-right)) calc(6px + env(safe-area-inset-bottom)) max(14px, env(safe-area-inset-left));
+    border-top: 1px solid var(--border);
+    background: var(--surface);
+    box-shadow: 0 -8px 24px #102c5410;
+  }
+  .compact-nav button {
+    min-width: 0;
+    min-height: 56px;
+    display: grid;
+    align-content: center;
+    justify-items: center;
+    gap: 4px;
+    border: 0;
+    border-radius: 15px;
+    background: transparent;
+    color: var(--muted);
+    font-size: 12px;
+    font-weight: 650;
+  }
+  .compact-nav [aria-current="page"] { color: var(--accent); background: var(--accent-soft); }
+  .kodeo-shell main :is(button, a, input, summary) { scroll-margin-bottom: calc(90px + env(safe-area-inset-bottom)); }
+  .kodeo-shell .page-heading { gap: 10px; margin-bottom: 18px; }
+  .kodeo-shell .page-heading h1 { font-size: clamp(24px, 5vw, 38px); line-height: 1.2; }
+  .kodeo-shell .page-heading p { font-size: 14px; line-height: 1.55; }
+  .kodeo-shell .demo-notice { margin-bottom: 14px; font-size: 12px; }
+  .kodeo-shell .stats-grid { gap: 10px; margin-bottom: 16px; }
+  .kodeo-shell .stat-card { min-height: 72px; border-radius: 15px; }
+  .kodeo-shell .continue-card {
+    grid-template-columns: minmax(0, 1fr);
+    border-radius: 22px;
+    background: radial-gradient(ellipse at top right, #3c50ab, transparent 70%), #102c54;
+    box-shadow: 0 12px 22px #102c5422;
+  }
+  .kodeo-shell .code-art { display: none; }
+  .kodeo-shell .hero-content { padding: clamp(20px, 4vw, 35px); }
+  .kodeo-shell .hero-content h2 { font-size: clamp(25px, 5vw, 38px); margin: 12px 0 6px; line-height: 1.2; }
+  .kodeo-shell .hero-content .MuiButton-root { min-height: 48px; width: 100%; border-radius: 13px; font-size: 15px; font-weight: 750; }
+  .kodeo-shell .hero-time { display: flex; margin: 12px 0 0; }
+  .kodeo-shell .hero-footer { padding: 14px 20px; color: #e7efff; }
+  .kodeo-shell .hero-footer .MuiLinearProgress-root { height: 7px; }
+  .kodeo-shell :is(.course-card, .achievement, .panel, .task-list) { border-radius: 16px; }
+  .kodeo-shell .task-row p, .kodeo-shell .achievement p { font-size: 13px; }
+  .kodeo-shell .achievement h3 { font-size: 15px; }
+}
+
+@media (max-width: 540px) {
+  .kodeo-shell .topbar .avatar.small, .install-kodeo-name { display: none; }
+  .kodeo-shell .stats-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .kodeo-shell .hero-footer { flex-wrap: wrap; }
+  .kodeo-shell .hero-footer > span:first-child { flex-basis: 100%; }
+}
+
+@media (min-width: 541px) and (max-width: 1024px) {
+  .kodeo-shell .dashboard-grid { grid-template-columns: minmax(0, 1fr); }
+  .kodeo-shell .secondary-column { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+  .kodeo-shell .weekly-panel { margin-top: 0; }
+}
+
+@media (min-width: 761px) and (max-width: 1024px) {
+  .kodeo-shell .stats-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
