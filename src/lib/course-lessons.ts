@@ -6,7 +6,7 @@ export const securityLessonId = 'sec-quiz';
 const securityLesson: LessonDefinition = {
   ...securityQuiz,
   id: securityLessonId,
-  introduction: 'Pratique com 20 situações fictícias, dos fundamentos à resposta a incidentes. Cada questão tem uma dica e explica o raciocínio após a resposta.',
+  introduction: 'Pratique com 25 situações fictícias, dos fundamentos à resposta a incidentes. Cada questão tem uma dica e explica o raciocínio após a resposta.',
   questions: securityQuiz.questions.map(question => ({ ...question, type: 'choice', options: [...question.options] })),
 };
 
